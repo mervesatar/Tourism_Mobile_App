@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/FirstPage.dart';
-import 'ERPage.dart';
+import 'ARPage.dart';
 import 'TripPage.dart';
 
 class Homepage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _HomepageState extends State<Homepage> {
         children: <Widget>[
           FirstPage(),
           TripPage(),
-          ERPage(),
+          ARPage(),
 
 
 
@@ -51,8 +51,8 @@ class _HomepageState extends State<Homepage> {
         unselectedItemColor: Colors.black,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home Page'),
-          BottomNavigationBarItem(icon: Icon(Icons.trip_origin), label: 'Trip Page'),
-          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'ER Page'),
+          BottomNavigationBarItem(icon: Icon(Icons.location_on), label: 'Trip Page'),
+          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'AR Page'),
 
 
         ],
