@@ -25,8 +25,12 @@ class _signup extends State<signup> {
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Sign Up Screen'),
-        backgroundColor: Colors.black,
+        title: Text('Sign Up', style: TextStyle(
+          fontFamily: 'Satisfy',
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+        ),),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Container(
         child: Center(
@@ -38,21 +42,41 @@ class _signup extends State<signup> {
                   height: (MediaQuery.of(context).size.height)/7,
                   width: (MediaQuery.of(context).size.width)/2,
 
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(child: Text('Personal Informations', style: TextStyle(
-                    fontSize: 30,
+                  child: Center(child: Text('Please Enter Your Personal Information', style: TextStyle(
+                    fontFamily: 'Satisfy',
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
                     foreground: Paint()
-                      ..style = PaintingStyle.stroke
-                      ..strokeWidth = 2
+                    //..style = PaintingStyle.stroke
+                    //..strokeWidth = 2
                       ..color = Colors.white,
                   ),)),
+                ),
+              ),
+              SizedBox(
+                height: (MediaQuery.of(context).size.height) / 80,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                child: TextField(
+                  controller: nameControl,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                      border: OutlineInputBorder(),
+                      labelText: 'First Name',
+                      hintText: 'hasan'),
+                ),
+              ),
+              SizedBox(
+                height: (MediaQuery.of(context).size.height) / 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                child: TextField(
+                  controller: surnameControl,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                      border: OutlineInputBorder(),
+                      labelText: 'Last Name',
+                      hintText: 'hasan'),
                 ),
               ),
               SizedBox(
@@ -64,9 +88,9 @@ class _signup extends State<signup> {
 
                   //obscureText: true,
                   controller: mailControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                       border: OutlineInputBorder(),
-                      labelText: 'Mail',
+                      labelText: 'E-mail',
                       hintText: 'anilirfanoglu@hotmail.com'),
                 ),
               ),
@@ -78,7 +102,7 @@ class _signup extends State<signup> {
                 child: TextField(
                   controller: passwordControl,
                   obscureText: true,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                       hintText: '123456789'),
@@ -90,34 +114,8 @@ class _signup extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
-                  controller: nameControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                      hintText: 'hasan'),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  controller: surnameControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                      hintText: 'hasan'),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
                   controller: genderControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Gender',
                       hintText: 'male or female'),
@@ -130,7 +128,7 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: ageControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Age',
                       hintText: '20'),
@@ -144,25 +142,25 @@ class _signup extends State<signup> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)
+                      side: BorderSide(color: Colors.blue)
                   ),
-                  color: Colors.black,
+                  color: Colors.lightBlue,
                   textColor: Colors.white,
                   disabledColor: Colors.grey,
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Colors.greenAccent,
                   onPressed: () async {
                     signup()
                         .authService
                         .signupProcess(
-                        mailControl.text,
-                        passwordControl.text,
-                        nameControl.text,
-                        surnameControl.text,
-                        genderControl.text,
-                        ageControl.text,
-                        )
+                      mailControl.text,
+                      passwordControl.text,
+                      nameControl.text,
+                      surnameControl.text,
+                      genderControl.text,
+                      ageControl.text,
+                    )
                         .then((value) {
                       //Scaffold.of(context).showSnackBar(SnackBar(
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -180,7 +178,11 @@ class _signup extends State<signup> {
                     children: [
                       Text(
                         "Sign Up",
-                        style: TextStyle(fontSize: 20.0),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontFamily: 'Satisfy',
+                          fontWeight: FontWeight.bold,
+                        ),
                         softWrap: true,
                       ),
                     ],
@@ -190,40 +192,15 @@ class _signup extends State<signup> {
               SizedBox(
                 height: (MediaQuery.of(context).size.height) / 30,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)
-                  ),
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  disabledColor: Colors.grey,
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
-                  onPressed: () {
-
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
-                  },
-
-
-                  child: Text(
-                    "Back",
-                    style: TextStyle(fontSize: 20.0),
-                    softWrap: true,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
             ],
           ),
         ),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/background2.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.white.withOpacity(0.8), BlendMode.dstATop))),
       ),
     );
   }

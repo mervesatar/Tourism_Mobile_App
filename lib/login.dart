@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'MainPage.dart';
 import 'homepage.dart';
 import 'signup.dart';
 import 'userClass.dart';
@@ -53,10 +54,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Login Screen'),
-      ),
       body: Container(
         child: Center(
           child: isloading
@@ -64,42 +61,42 @@ class _LoginState extends State<Login> {
               : ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(8, 100, 8, 0),
                 child: Container(
-                  height: (MediaQuery.of(context).size.height) / 5,
+                  height: (MediaQuery.of(context).size.height) / 7,
                   width: (MediaQuery.of(context).size.width) / 1.2,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
                   child: Center(
                       child: Text(
-                        'Tourism Mobile App',
+                        'TourMe',
                         style: TextStyle(
-                          fontSize: 35,
+                          fontFamily: 'Merienda',
+                          fontSize: 70,
                           foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 4
-                            ..color = Colors.white,
+                          //..style = PaintingStyle.stroke
+                          //..strokeWidth = 3
+                            ..color = Colors.lightBlue,
                         ),
                       )),
                 ),
               ),
+              Center(
+                child: Text('Your Personal Tour Guide!', style: TextStyle(
+                  fontFamily: 'Satisfy',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),),
+              ),
               SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
+                height: (MediaQuery.of(context).size.height) / 12,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   //obscureText: true,
                   controller: mailControl,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                     border: OutlineInputBorder(),
-                    labelText: 'Mail',
+                    labelText: 'E-mail',
                   ),
                 ),
               ),
@@ -111,7 +108,7 @@ class _LoginState extends State<Login> {
                 child: TextField(
                   controller: passwordControl,
                   obscureText: true,
-                  decoration: InputDecoration(fillColor: Colors.white,filled: true,
+                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                   ),
@@ -125,14 +122,14 @@ class _LoginState extends State<Login> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)
+                      side: BorderSide(color: Colors.blue)
                   ),
-                  color: Colors.black,
-                  textColor: Colors.white,
+                  color: Colors.lightBlue,
+                  textColor: Colors.black,
                   disabledColor: Colors.grey,
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.red,
+                  splashColor: Colors.greenAccent,
                   onPressed: () async {
                     if (_connectionStatus == 'ConnectivityResult.none'){
                       print('hi');
@@ -159,14 +156,18 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Homepage()));
+                                builder: (context) => MainPage()));
                       }).catchError((Error) {
                         print(Error);
                       }); }
                   },
                   child: Text(
                     "Sign In",
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'Satisfy',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -175,33 +176,38 @@ class _LoginState extends State<Login> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)
+                      side: BorderSide(color: Colors.blue)
                   ),
-                  color: Colors.black,
-                  textColor: Colors.white,
+                  color: Colors.lightBlue,
+                  textColor: Colors.black,
                   disabledColor: Colors.grey,
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.red,
+                  splashColor: Colors.greenAccent,
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => signup()));
                   },
                   child: Text(
                     "Sign Up",
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'Satisfy',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
 
                 ),
               ),
-
             ],
-
-
-
-
           ),
         ),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/background.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.white.withOpacity(0.6), BlendMode.dstATop))),
       ),
     );
   }

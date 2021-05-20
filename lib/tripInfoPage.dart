@@ -226,19 +226,19 @@ class _TripPageState extends State<TripPage> {
               new Column(children: <Widget>[
                 Text(
                   "$cityName Trip",
-                  style: TextStyle(fontSize: 25, color: Colors.orange[600]),
+                  style: TextStyle(fontSize: 25, color: Colors.black, fontFamily: 'Satisfy'),
                 ),
                 Text(
                   "Turkey",
-                  style: TextStyle(fontSize: 10, color: Colors.orange[600]),
+                  style: TextStyle(fontSize: 10, color: Colors.black),
                 ),
-                Icon(Icons.location_on, color: Colors.orange[600], size: 10),
+                Icon(Icons.location_on, color: Colors.lightBlue, size: 10),
               ]),
               new SizedBox(
                 width: 20,
               ),
               Divider(
-                color: Colors.orange[600],
+                color: Colors.lightBlue,
                 thickness: 1,
               ),
               new Row(
@@ -246,7 +246,7 @@ class _TripPageState extends State<TripPage> {
                   children: <Widget>[
                     Text(
                       "Destinations:",
-                      style: TextStyle(fontSize: 25, color: Colors.orange[600]),
+                      style: TextStyle(fontSize: 25, color: Colors.black, fontFamily: 'Merienda'),
                     ),
                   ]),
               new Container(
@@ -254,7 +254,7 @@ class _TripPageState extends State<TripPage> {
                   shrinkWrap: true,
                   itemCount: result.length,
                   separatorBuilder: (BuildContext context, int index) => Divider(
-                    color: Colors.orange[600],
+                    color: Colors.lightBlue,
                     thickness: 3,
                   ),
                   itemBuilder: (BuildContext context, int index) {
@@ -264,7 +264,7 @@ class _TripPageState extends State<TripPage> {
                         ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.orange[600]),
+                            MaterialStateProperty.all(Colors.lightBlue),
                           ),
                           child: Text('Go To Map'),
                           onPressed: () async {
@@ -287,7 +287,7 @@ class _TripPageState extends State<TripPage> {
                         ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.orange[600]),
+                            MaterialStateProperty.all(Colors.lightBlue),
                           ),
                           child: Text('Comments'),
                           onPressed: () async {
@@ -310,7 +310,7 @@ class _TripPageState extends State<TripPage> {
                                       new ListTile(
                                           leading: IconButton(
                                               icon: Icon(Icons.arrow_back,
-                                                  color: Colors.orange[600]),
+                                                  color: Colors.lightBlue),
                                               onPressed: () {
                                                 ffr.clear();
                                                 ffpID.clear();
@@ -326,7 +326,7 @@ class _TripPageState extends State<TripPage> {
                                           separatorBuilder:
                                               (BuildContext context, int index) =>
                                               Divider(
-                                                color: Colors.orange[600],
+                                                color: Colors.lightBlue,
                                                 thickness: 3,
                                               ),
                                           itemBuilder:

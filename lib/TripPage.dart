@@ -27,11 +27,12 @@ class _TripPageState extends State<TripPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Center(child: Text("Tours", style:new TextStyle(
-          fontSize: 30.0,
+        title: Text("Recommended Trips", style:new TextStyle(
+          fontSize: 25,
           fontWeight: FontWeight.bold,
-        ),)),
-        automaticallyImplyLeading: false,
+          fontFamily: 'Satisfy',
+        ),),
+        //automaticallyImplyLeading: false,
       ),
       body: StreamBuilder(
 
@@ -165,6 +166,7 @@ class _TripPageState extends State<TripPage> {
   );
 
 }
+
 
 
 
