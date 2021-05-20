@@ -37,6 +37,7 @@ dependencies:
   geocoding: ^2.0.0
   http: ^0.13.3
   connectivity: ^3.0.3
+  flutter_rating_bar: ^4.0.0
 
 
 dev_dependencies:

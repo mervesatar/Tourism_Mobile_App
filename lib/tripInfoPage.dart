@@ -86,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                     title: Text(tripCities[index] + " Trip"),
+
                     onTap: () {
                       /* Navigator.push(
                 context,
