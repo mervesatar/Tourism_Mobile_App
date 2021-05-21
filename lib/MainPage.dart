@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:project/TripPage.dart';
 
@@ -10,7 +8,7 @@ class MainPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:<Widget>[
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Container(
@@ -18,24 +16,27 @@ class MainPage extends StatelessWidget {
                 width: (MediaQuery.of(context).size.width) / 1.2,
                 child: Center(
                     child: Text(
-                      'TourMe',
-                      style: TextStyle(
-                        fontFamily: 'Merienda',
-                        fontSize: 70,
-                        foreground: Paint()
-                        //..style = PaintingStyle.stroke
-                        //..strokeWidth = 3
-                          ..color = Colors.lightBlue,
-                      ),
-                    )),
+                  'TourMe',
+                  style: TextStyle(
+                    fontFamily: 'Merienda',
+                    fontSize: 70,
+                    foreground: Paint()
+                      //..style = PaintingStyle.stroke
+                      //..strokeWidth = 3
+                      ..color = Colors.lightBlue,
+                  ),
+                )),
               ),
             ),
             Center(
-              child: Text('Your Personal Tour Guide!', style: TextStyle(
-                fontFamily: 'Satisfy',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),),
+              child: Text(
+                'Your Personal Tour Guide!',
+                style: TextStyle(
+                  fontFamily: 'Satisfy',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             SizedBox(
               height: (MediaQuery.of(context).size.height) / 25,
@@ -45,7 +46,7 @@ class MainPage extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:<Widget> [
+              children: <Widget>[
                 Container(
                   height: (MediaQuery.of(context).size.height) / 4,
                   width: (MediaQuery.of(context).size.width) / 2.5,
@@ -62,7 +63,8 @@ class MainPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text('Recommended Trips',
+                    child: Text(
+                      'Recommended Trips',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -71,10 +73,8 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TripPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => TripPage()));
                     },
                   ),
                 ),
@@ -97,7 +97,8 @@ class MainPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text('Recent Trips',
+                    child: Text(
+                      'Recent Trips',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -120,7 +121,7 @@ class MainPage extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:<Widget> [
+              children: <Widget>[
                 Container(
                   height: (MediaQuery.of(context).size.height) / 4,
                   width: (MediaQuery.of(context).size.width) / 2.5,
@@ -137,7 +138,8 @@ class MainPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text('Search Trips',
+                    child: Text(
+                      'Search Trips',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -172,7 +174,8 @@ class MainPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text('Settings',
+                    child: Text(
+                      'Settings',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',

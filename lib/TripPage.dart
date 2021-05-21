@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:project/tripInfoPage.dart' as info;
+
+import 'homepage.dart';
+
 class TripPage extends StatefulWidget {
   @override
   _TripPageState createState() => _TripPageState();
 }
 
 class _TripPageState extends State<TripPage> {
-
-
   double _rating;
 
-  double _initialRating=3 ;
-
+  double _initialRating = 3;
 
   @override
   void initState() {
@@ -27,31 +27,29 @@ class _TripPageState extends State<TripPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text("Recommended Trips", style:new TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Satisfy',
-        ),),
+        title: Text(
+          "Recommended Trips",
+          style: new TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Satisfy',
+          ),
+        ),
         //automaticallyImplyLeading: false,
       ),
       body: StreamBuilder(
-
         stream: FirebaseFirestore.instance.collection('tours').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
-
             );
-
           }
 
           return ListView(
-
             children: snapshot.data.docs.map((document) {
               return Container(
                 height: 170.0,
-
                 child: InkWell(
                   child: Card(
                     child: new Row(
@@ -59,74 +57,59 @@ class _TripPageState extends State<TripPage> {
                       children: <Widget>[
                         new Image.asset(
                           'images/${document['tour_name']}.jpg',
-                          fit: BoxFit.fill, width: 200,height: 300,),
-
+                          fit: BoxFit.fill,
+                          width: 200,
+                          height: 300,
+                        ),
                         new Expanded(
                             child: new Center(
                                 child: new Column(
-                                  children: <Widget>[
-                                    new SizedBox(height: 15.0),
-                                    Center(
-                                      child: new Text(
-                                        "${document['tour_name']}\n",
-                                        style: new TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-
-                                    ),
-
-                                    new Text("Tour Date: ${document['tour_date']}\n"),
-
-                                    new Container(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-
-
-                                          _ratingBar(),
-
-
-                                        ],
-                                      ),
-
-                                      ),
-
-                                  ],
-                                )))
+                          children: <Widget>[
+                            new SizedBox(height: 15.0),
+                            Center(
+                              child: new Text(
+                                "${document['tour_name']}\n",
+                                style: new TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            new Text("Tour Date: ${document['tour_date']}\n"),
+                            new Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  _ratingBar(document['tour_rate'].toDouble()),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )))
                       ],
                     ),
                     elevation: 2.0,
                     margin: EdgeInsets.all(5.0),
-
-
                   ),
-                  onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => info.TripPage(
-                              cityName: "${document['tour_name']}",
-                            )));
+                  onTap: () {
+                    Homepage.asd = "${document['tour_name']}";
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Homepage()));
                   },
                 ),
               );
-
-
             }).toList(),
           );
         },
       ),
     );
   }
-  Widget _ratingBar() {
 
+  Widget _ratingBar(double rate) {
     return RatingBar.builder(
-      initialRating: _initialRating,
+      initialRating: rate,
       minRating: 1,
-
       allowHalfRating: true,
       unratedColor: Colors.amber.withAlpha(50),
       itemCount: 5,
@@ -143,30 +126,20 @@ class _TripPageState extends State<TripPage> {
       },
       updateOnDrag: true,
     );
-
-
-
   }
 
-
-
   Widget _heading(String text) => Column(
-    children: [
-      Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 16.0,
-        ),
-      ),
-      SizedBox(
-        height: 16.0,
-      ),
-    ],
-  );
-
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 16.0,
+            ),
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+        ],
+      );
 }
-
-
-
-

@@ -86,7 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                     title: Text(tripCities[index] + " Trip"),
-
                     onTap: () {
                       /* Navigator.push(
                 context,
@@ -101,9 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TripPage(
-                                cityName: tripCities[index],
-                              )));
+                              builder: (context) => TripInfoPage(
+                                    cityName: tripCities[index],
+                                  )));
                     });
               },
             ),
@@ -112,18 +111,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class TripPage extends StatefulWidget {
+class TripInfoPage extends StatefulWidget {
   final String cityName;
-  TripPage({@required this.cityName});
+  TripInfoPage({@required this.cityName});
 
   @override
-  _TripPageState createState() => _TripPageState(cityName);
+  _TripInfoPageState createState() => _TripInfoPageState(cityName);
 }
 
-class _TripPageState extends State<TripPage> {
+class _TripInfoPageState extends State<TripInfoPage> {
   final cityName;
 
-  _TripPageState(this.cityName);
+  _TripInfoPageState(this.cityName);
   reviews temprev = new reviews();
   placeID tempid = new placeID();
   Location temploc = new Location();
@@ -195,10 +194,10 @@ class _TripPageState extends State<TripPage> {
     ffl = [temploc];
     if (cityName == "Ankara") {
       tripPoints =
-      "Anıtkabir,Medeniyetler Müzesi,Kurtuluş Savaşı Müzesi,Kuğulu Park";
+          "Anıtkabir,Medeniyetler Müzesi,Kurtuluş Savaşı Müzesi,Kuğulu Park";
     } else if (cityName == "Istanbul") {
       tripPoints =
-      "Ayasofya Camii,Kapalı Çarşı,Topkapı Palace,Dolmabahçe Palace";
+          "Ayasofya Camii,Kapalı Çarşı,Topkapı Palace,Dolmabahçe Palace";
     } else if (cityName == "Kayseri") {
       tripPoints = "Erciyes Dağı,Kayseri Kalesi,Mazakaland,Mimar Sinan Evi";
     }
@@ -209,138 +208,142 @@ class _TripPageState extends State<TripPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              new Container(
-                width: 500,
-                height: 250,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image(
-                        image: new AssetImage('images/$cityName' + 'Tour.jpg'),
-                        fit: BoxFit.cover)),
-              ),
-              new SizedBox(
-                height: 20,
-              ),
-              new Column(children: <Widget>[
+      child: Column(
+        children: [
+          new Container(
+            width: 500,
+            height: 250,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image(
+                    image: new AssetImage('images/$cityName' + 'Tour.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          new SizedBox(
+            height: 20,
+          ),
+          new Column(children: <Widget>[
+            Text(
+              "$cityName Trip",
+              style: TextStyle(
+                  fontSize: 25, color: Colors.black, fontFamily: 'Satisfy'),
+            ),
+            Text(
+              "Turkey",
+              style: TextStyle(fontSize: 10, color: Colors.black),
+            ),
+            Icon(Icons.location_on, color: Colors.lightBlue, size: 10),
+          ]),
+          new SizedBox(
+            width: 20,
+          ),
+          Divider(
+            color: Colors.lightBlue,
+            thickness: 1,
+          ),
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
                 Text(
-                  "$cityName Trip",
-                  style: TextStyle(fontSize: 25, color: Colors.black, fontFamily: 'Satisfy'),
+                  "Destinations:",
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
+                      fontFamily: 'Merienda'),
                 ),
-                Text(
-                  "Turkey",
-                  style: TextStyle(fontSize: 10, color: Colors.black),
-                ),
-                Icon(Icons.location_on, color: Colors.lightBlue, size: 10),
               ]),
-              new SizedBox(
-                width: 20,
-              ),
-              Divider(
+          new Container(
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: result.length,
+              separatorBuilder: (BuildContext context, int index) => Divider(
                 color: Colors.lightBlue,
-                thickness: 1,
+                thickness: 3,
               ),
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Destinations:",
-                      style: TextStyle(fontSize: 25, color: Colors.black, fontFamily: 'Merienda'),
-                    ),
-                  ]),
-              new Container(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: result.length,
-                  separatorBuilder: (BuildContext context, int index) => Divider(
-                    color: Colors.lightBlue,
-                    thickness: 3,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(result[index]),
-                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(result[index]),
+                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
                             MaterialStateProperty.all(Colors.lightBlue),
-                          ),
-                          child: Text('Go To Map'),
-                          onPressed: () async {
-                            if (ffl.isEmpty == false) {
-                              ffl.clear();
-                            } else {}
-                            ffl = await getList(result[index]);
+                      ),
+                      child: Text('Go To Map'),
+                      onPressed: () async {
+                        if (ffl.isEmpty == false) {
+                          ffl.clear();
+                        } else {}
+                        ffl = await getList(result[index]);
 
-                            print(ffl[0].latitude);
-                            print(ffl[0].longitude);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapSample(
+                        print(ffl[0].latitude);
+                        print(ffl[0].longitude);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapSample(
                                       long: ffl[0].longitude,
                                       lat: ffl[0].latitude,
                                     )));
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
                             MaterialStateProperty.all(Colors.lightBlue),
-                          ),
-                          child: Text('Comments'),
-                          onPressed: () async {
-                            if (ffpID.isEmpty == false) {
-                              ffpID.clear();
-                            } else {}
-                            if (ffr.isEmpty == false) {
-                              ffr.clear();
-                            } else {}
-                            ffpID = await getPlaceID(result[index]);
-                            print(ffpID[0].place_id);
-                            ffr = await getReview(ffpID[0].place_id);
-                            showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SingleChildScrollView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  child: Column(
-                                    children: [
-                                      new ListTile(
-                                          leading: IconButton(
-                                              icon: Icon(Icons.arrow_back,
-                                                  color: Colors.lightBlue),
-                                              onPressed: () {
-                                                ffr.clear();
-                                                ffpID.clear();
-                                                Navigator.of(context).pop();
-                                              }),
-                                          title: Center(child: Text("Comments"))),
-                                      Container(
-                                        height: 250,
-                                        width: 500,
-                                        child: ListView.separated(
-                                          padding: EdgeInsets.all(20.0),
-                                          itemCount: ffr.length,
-                                          separatorBuilder:
-                                              (BuildContext context, int index) =>
+                      ),
+                      child: Text('Comments'),
+                      onPressed: () async {
+                        if (ffpID.isEmpty == false) {
+                          ffpID.clear();
+                        } else {}
+                        if (ffr.isEmpty == false) {
+                          ffr.clear();
+                        } else {}
+                        ffpID = await getPlaceID(result[index]);
+                        print(ffpID[0].place_id);
+                        ffr = await getReview(ffpID[0].place_id);
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  new ListTile(
+                                      leading: IconButton(
+                                          icon: Icon(Icons.arrow_back,
+                                              color: Colors.lightBlue),
+                                          onPressed: () {
+                                            ffr.clear();
+                                            ffpID.clear();
+                                            Navigator.of(context).pop();
+                                          }),
+                                      title: Center(child: Text("Comments"))),
+                                  Container(
+                                    height: 250,
+                                    width: 500,
+                                    child: ListView.separated(
+                                      padding: EdgeInsets.all(20.0),
+                                      itemCount: ffr.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
                                               Divider(
-                                                color: Colors.lightBlue,
-                                                thickness: 3,
-                                              ),
-                                          itemBuilder:
-                                              (BuildContext context, int ind) {
-                                            return ListTile(
-                                              title: Text(ffr[ind].author_name),
-                                              subtitle: Text(ffr[ind].text),
-                                            );
-                                          },
-                                        ),
+                                        color: Colors.lightBlue,
+                                        thickness: 3,
                                       ),
-                                    ],
+                                      itemBuilder:
+                                          (BuildContext context, int ind) {
+                                        return ListTile(
+                                          title: Text(ffr[ind].author_name),
+                                          subtitle: Text(ffr[ind].text),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                  /*child: Column(
+                                ],
+                              ),
+                              /*child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -351,16 +354,16 @@ class _TripPageState extends State<TripPage> {
                                 )
                               ],
                             ),*/
-                                );
-                              },
                             );
                           },
-                        ),
-                      ]),
-                      onTap: () {},
-                    );
-                  },
-                ), /*ListTile(
+                        );
+                      },
+                    ),
+                  ]),
+                  onTap: () {},
+                );
+              },
+            ), /*ListTile(
                         title: Text("Kızılay"),
                         onTap: () {
                           print(locations[0].latitude);
@@ -373,8 +376,8 @@ class _TripPageState extends State<TripPage> {
                                         lat: locations[0].latitude,
                                       )));
                         }),*/
-              ),
-              /*Container(
+          ),
+          /*Container(
             child: FutureBuilder(
               future: locationss,
               builder: (context, snapshot) {
@@ -392,9 +395,9 @@ class _TripPageState extends State<TripPage> {
               },
             ),
           ),*/
-            ],
-          ),
-        ));
+        ],
+      ),
+    ));
   }
 }
 
