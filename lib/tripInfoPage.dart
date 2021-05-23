@@ -1,5 +1,4 @@
-import 'dart:ffi';
-import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,121 +7,28 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_place/google_place.dart' as gp;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'authentication.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DotEnv().load('.env');
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.orange[50]),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  /*gp.GooglePlace googlePlace;
-  Future getList() async {
-    List<Location> locations = await locationFromAddress("Ankara");
-    print(locations);
-  }*/
-  List<String> tripCities = ["Ankara", "Istanbul", "Kayseri"];
-  List<String> tripDestinations = [
-    "Anıtkabir,Medeniyetler Müzesi, Kale, Ankamall",
-    "Ayasofya Camii,Kapalı Çarşı,Topkapı Palace,Dolmabahçe Palace",
-    "Erciyes Dağı,Kayseri Kalesi,Mazakaland,Mimar Sinan Evi"
-  ];
-
-  @override
-  void initState() {
-    /*String apiKey = DotEnv().env['AIzaSyCA3b6uYvyVpMxZZiAnyvmebNA7tXcMXTs'];
-    googlePlace = gp.GooglePlace(apiKey);*/
-    super.initState();
-    /*getList();*/
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          iconTheme: new IconThemeData(color: Color(0xfffcff3d)),
-          backgroundColor: Colors.orange[600],
-          title: Text(
-            "Tourism Mobile APP",
-            style: TextStyle(
-                color: Colors.orange[50], fontFamily: 'Courier', fontSize: 26),
-          ),
-        ),
-        body: Container(
-          decoration: new BoxDecoration(color: Colors.orange[50]),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: tripCities.length,
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                color: Colors.orange[600],
-                thickness: 3,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    title: Text(tripCities[index] + " Trip"),
-                    onTap: () {
-                      /* Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => DetailsPage(
-                placeId: predictions[index].placeId,
-                googlePlace: googlePlace,
-                ),
-                ),
-                );*/
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TripInfoPage(
-                                    cityName: tripCities[index],
-                                  )));
-                    });
-              },
-            ),
-          ),
-        ));
-  }
-}
 
 class TripInfoPage extends StatefulWidget {
-  final String cityName;
-  TripInfoPage({@required this.cityName});
+  final String tour_name;
+  final double tour_rate;
+  final double rate_number;
 
+  TripInfoPage({@required this.tour_name, this.tour_rate, this.rate_number});
+  AuthenticationService autService = new AuthenticationService();
   @override
-  _TripInfoPageState createState() => _TripInfoPageState(cityName);
+  _TripInfoPageState createState() => _TripInfoPageState(tour_name,tour_rate,rate_number);
 }
 
 class _TripInfoPageState extends State<TripInfoPage> {
-  final cityName;
+  final tour_name;
+  final double tour_rate;
+  final double rate_number;
 
-  _TripInfoPageState(this.cityName);
+
+  _TripInfoPageState(this.tour_name,this.tour_rate,this.rate_number);
   reviews temprev = new reviews();
   placeID tempid = new placeID();
   Location temploc = new Location();
@@ -140,12 +46,7 @@ class _TripInfoPageState extends State<TripInfoPage> {
       // print(element.toString());
       placeID placeid = new placeID();
       placeid = placeID.fromMap(element);
-
       placeIDs.add(placeid);
-
-      // getRecipePage(recipeModel.id);
-
-      // print(placeid.place_id);
     });
     return placeIDs;
   }
@@ -156,24 +57,18 @@ class _TripInfoPageState extends State<TripInfoPage> {
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$query&key=AIzaSyCA3b6uYvyVpMxZZiAnyvmebNA7tXcMXTs";
     var response = await http.get(Uri.parse(link));
     Map<String, dynamic> jsonData = jsonDecode(response.body);
-    //print("this is json Data $jsonData");
     jsonData["result"]["reviews"].forEach((element) {
-      // print(element.toString());
       reviews review = new reviews();
       review = reviews.fromMap(element);
 
       reviewsList.add(review);
 
-      // getRecipePage(recipeModel.id);
 
       print(review.author_name);
       print(review.text);
     });
     return reviewsList;
   }
-
-  List<String> result;
-  String tripPoints;
 
   gp.GooglePlace googlePlace;
   List<Location> locations;
@@ -188,216 +83,158 @@ class _TripInfoPageState extends State<TripInfoPage> {
     String apiKey = DotEnv().env['AIzaSyCA3b6uYvyVpMxZZiAnyvmebNA7tXcMXTs'];
     googlePlace = gp.GooglePlace(apiKey);
     super.initState();
-    getList(cityName);
+    getList(tour_name);
     ffpID = [tempid];
     ffr = [temprev];
     ffl = [temploc];
-    if (cityName == "Ankara") {
-      tripPoints =
-          "Anıtkabir,Medeniyetler Müzesi,Kurtuluş Savaşı Müzesi,Kuğulu Park";
-    } else if (cityName == "Istanbul") {
-      tripPoints =
-          "Ayasofya Camii,Kapalı Çarşı,Topkapı Palace,Dolmabahçe Palace";
-    } else if (cityName == "Kayseri") {
-      tripPoints = "Erciyes Dağı,Kayseri Kalesi,Mazakaland,Mimar Sinan Evi";
-    }
-    result = tripPoints.split(',');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          new Container(
-            width: 500,
-            height: 250,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image(
-                    image: new AssetImage('images/$cityName' + 'Tour.jpg'),
-                    fit: BoxFit.cover)),
+      appBar: AppBar(
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {
+              TripInfoPage()
+                  .autService
+                  .add(
+                  tour_name, tour_rate, rate_number
+              )
+                  .then((value) {
+              }).catchError((Error) {
+                print(Error);
+              });
+            },
+            child: Text("Take the Tour"),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
-          new SizedBox(
-            height: 20,
-          ),
-          new Column(children: <Widget>[
-            Text(
-              "$cityName Trip",
-              style: TextStyle(
-                  fontSize: 25, color: Colors.black, fontFamily: 'Satisfy'),
-            ),
-            Text(
-              "Turkey",
-              style: TextStyle(fontSize: 10, color: Colors.black),
-            ),
-            Icon(Icons.location_on, color: Colors.lightBlue, size: 10),
-          ]),
-          new SizedBox(
-            width: 20,
-          ),
-          Divider(
-            color: Colors.lightBlue,
-            thickness: 1,
-          ),
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Destinations:",
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black,
-                      fontFamily: 'Merienda'),
-                ),
-              ]),
-          new Container(
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: result.length,
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                color: Colors.lightBlue,
-                thickness: 3,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(result[index]),
-                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.lightBlue),
-                      ),
-                      child: Text('Go To Map'),
-                      onPressed: () async {
-                        if (ffl.isEmpty == false) {
-                          ffl.clear();
-                        } else {}
-                        ffl = await getList(result[index]);
+        ],
 
-                        print(ffl[0].latitude);
-                        print(ffl[0].longitude);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MapSample(
+        backgroundColor: Colors.blue,
+        title: Text(
+          "${tour_name}",
+          style: new TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Satisfy',
+          ),
+        ),
+      ),
+
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('tours').doc(tour_name).collection('locations').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return ListView(
+
+              children: snapshot.data.docs.map((document) {
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(document['location_name']),
+                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(Colors.lightBlue),
+                          ),
+                          child: Text('Go To Map'),
+                          onPressed: () async {
+                            if (ffl.isEmpty == false) {
+                              ffl.clear();
+                            } else {}
+                            ffl = await getList(document['location_name']);
+
+                            print(ffl[0].latitude);
+                            print(ffl[0].longitude);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapSample(
                                       long: ffl[0].longitude,
                                       lat: ffl[0].latitude,
                                     )));
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
+                          },
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
                             MaterialStateProperty.all(Colors.lightBlue),
-                      ),
-                      child: Text('Comments'),
-                      onPressed: () async {
-                        if (ffpID.isEmpty == false) {
-                          ffpID.clear();
-                        } else {}
-                        if (ffr.isEmpty == false) {
-                          ffr.clear();
-                        } else {}
-                        ffpID = await getPlaceID(result[index]);
-                        print(ffpID[0].place_id);
-                        ffr = await getReview(ffpID[0].place_id);
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SingleChildScrollView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  new ListTile(
-                                      leading: IconButton(
-                                          icon: Icon(Icons.arrow_back,
-                                              color: Colors.lightBlue),
-                                          onPressed: () {
-                                            ffr.clear();
-                                            ffpID.clear();
-                                            Navigator.of(context).pop();
-                                          }),
-                                      title: Center(child: Text("Comments"))),
-                                  Container(
-                                    height: 250,
-                                    width: 500,
-                                    child: ListView.separated(
-                                      padding: EdgeInsets.all(20.0),
-                                      itemCount: ffr.length,
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
+                          ),
+                          child: Text('Comments'),
+                          onPressed: () async {
+                            if (ffpID.isEmpty == false) {
+                              ffpID.clear();
+                            } else {}
+                            if (ffr.isEmpty == false) {
+                              ffr.clear();
+                            } else {}
+                            ffpID = await getPlaceID(document['location_name']);
+                            print(ffpID[0].place_id);
+                            ffr = await getReview(ffpID[0].place_id);
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SingleChildScrollView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  child: Column(
+                                    children: [
+                                      new ListTile(
+                                          leading: IconButton(
+                                              icon: Icon(Icons.arrow_back,
+                                                  color: Colors.lightBlue),
+                                              onPressed: () {
+                                                ffr.clear();
+                                                ffpID.clear();
+                                                Navigator.of(context).pop();
+                                              }),
+                                          title: Center(child: Text("Comments"))),
+                                      Container(
+                                        height: 250,
+                                        width: 500,
+                                        child: ListView.separated(
+                                          padding: EdgeInsets.all(20.0),
+                                          itemCount: ffr.length,
+                                          separatorBuilder:
+                                              (BuildContext context, int index) =>
                                               Divider(
-                                        color: Colors.lightBlue,
-                                        thickness: 3,
+                                                color: Colors.lightBlue,
+                                                thickness: 3,
+                                              ),
+                                          itemBuilder:
+                                              (BuildContext context, int ind) {
+                                            return ListTile(
+                                              title: Text(ffr[ind].author_name),
+                                              subtitle: Text(ffr[ind].text),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      itemBuilder:
-                                          (BuildContext context, int ind) {
-                                        return ListTile(
-                                          title: Text(ffr[ind].author_name),
-                                          subtitle: Text(ffr[ind].text),
-                                        );
-                                      },
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              /*child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                const Text('Modal BottomSheet'),
-                                ElevatedButton(
-                                  child: const Text('Close BottomSheet'),
-                                  onPressed: () => Navigator.pop(context),
-                                )
-                              ],
-                            ),*/
+                                );
+                              },
                             );
                           },
-                        );
-                      },
+                        ),
+                      ]),
+                      onTap: () {},
                     ),
-                  ]),
-                  onTap: () {},
+                  ],
                 );
-              },
-            ), /*ListTile(
-                        title: Text("Kızılay"),
-                        onTap: () {
-                          print(locations[0].latitude);
-                          print(locations[0].longitude);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapSample(
-                                        long: locations[0].longitude,
-                                        lat: locations[0].latitude,
-                                      )));
-                        }),*/
-          ),
-          /*Container(
-            child: FutureBuilder(
-              future: locationss,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Icon(
-                      Icons.error_outline_sharp,
-                      size: 180,
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  return
-                } else
-                  return Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),*/
-        ],
-      ),
-    ));
+
+              }).toList(),
+            );
+          },
+        ),
+    );
   }
 }
 
@@ -490,3 +327,4 @@ class reviews {
     );
   }
 }
+

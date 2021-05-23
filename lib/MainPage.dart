@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project/TripPage.dart';
+import 'package:project/recentTrips.dart';
+
+import 'Settings.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -64,7 +67,7 @@ class MainPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'Recommended Trips',
+                      'Available Trips',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -107,10 +110,10 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RecTrips()));
+                       Navigator.push(
+                      context,
+                          MaterialPageRoute(
+                              builder: (context) => RecentTrips()));
                     },
                   ),
                 ),
@@ -184,10 +187,10 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RecTrips()));
+                     Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => update()));
                     },
                   ),
                 ),

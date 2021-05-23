@@ -4,9 +4,9 @@ class userClass{
   String id;
   String name;
   String surname;
-  String gender;
+  String interest;
   String age;
 
 
-  userClass({this.id, this.name, this.surname, this.gender, this.email, this.age,});
+  userClass({this.id, this.name, this.surname, this.interest, this.email, this.age,});
 }

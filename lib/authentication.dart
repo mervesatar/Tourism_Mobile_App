@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'login.dart';
 import 'userClass.dart';
 
 class AuthenticationService {
@@ -7,16 +9,16 @@ class AuthenticationService {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String> signupProcess(String email, String password, String name, String surname,
-      String gender, String age) async {
+      String interest, String age) async {
 
     if (email.trim().isEmpty || !email.trim().contains("@")) {
       return "Please enter a valid email address";
     }
-    if (password.trim().length < 7) {
-      return "Password must be at least 7 characters long";
+    if (password.trim().length < 6) {
+      return "Password must be at least 6 characters long";
     }
-    if (name.trim().length < 4) {
-      return "Name must be at least 4 characters long";
+    if (name.trim().length < 3) {
+      return "Name must be at least 3 characters long";
     }
 
 
@@ -37,7 +39,7 @@ class AuthenticationService {
         {
           "name": name.trim(),
           "surname": surname.trim(),
-          "gender": gender.trim(),
+          "interest": interest.trim(),
           "age": age,
 
 
@@ -59,14 +61,6 @@ class AuthenticationService {
   }
 
 
-  CollectionReference history = FirebaseFirestore.instance.collection('history');
-
-
-
-
-
-
-
   Future<userClass> signInProccess(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -82,7 +76,7 @@ class AuthenticationService {
         id: userCredential.user.uid,
         name: user["name"],
         surname: user["surname"],
-        gender: user["gender"],
+        interest: user["interest"],
         age: user["age"],
       );
 
@@ -100,15 +94,14 @@ class AuthenticationService {
     }
   }
 
-  Future<String> updateProcess(String id, String name, String surname, String gender, String performance,String age,String weight,String height) async {
+  Future<String> updateProcess(String id, String name, String surname, String interest, String age) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(id).update({
         'name' : name,
-        'gender' : gender,
-        'performance' : performance,
+        'interest' : interest,
+        'surname' : surname,
         'age': age,
-        'weight': weight,
-        'height' : height,
+
       });
 
       return 'Correct';
@@ -125,9 +118,12 @@ class AuthenticationService {
     }
   }
 
-  Future<String> delete(String id) async {
+  Future<String> updateProcess2(String id, bool is_rated) async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(id).delete();
+      await FirebaseFirestore.instance.collection('users').doc(Login.newUser.id).collection('recent_trips').doc(id).update({
+        'is_rated' : is_rated,
+
+      });
 
       return 'Correct';
 
@@ -142,9 +138,28 @@ class AuthenticationService {
       throw err.code;
     }
   }
-  Future<String> deleteUser() async {
+
+
+
+  Future<String> add(String tour_name,double tour_rate, double rate_number) async {
+    DocumentReference ref = FirebaseFirestore.instance.collection("users").doc(Login.newUser.id).collection('recent_trips').doc();
+
+    ref.set({
+      "tour_id" : ref.id,
+      "tour_name" : tour_name,
+      "tour_rate" : tour_rate,
+      "is_rated" : false,
+      "rate_number" : rate_number,
+
+    });
+  }
+
+  Future<String> updateProcess3(String id,tour_rate,rate_number) async {
     try {
-      await _auth.currentUser.delete();
+      await FirebaseFirestore.instance.collection('tours').doc(id).update({
+        'tour_rate' : tour_rate,
+        'rate_number' : rate_number,
+      });
 
       return 'Correct';
 
@@ -159,5 +174,14 @@ class AuthenticationService {
       throw err.code;
     }
   }
+
+
+
+
+
+
+
+
+
 
 }

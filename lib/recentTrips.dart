@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:project/MainPage.dart';
+import 'package:project/login.dart';
+import 'package:project/rating.dart';
+import 'authentication.dart';
 
 import 'homepage.dart';
 
-class TripPage extends StatefulWidget {
+class RecentTrips extends StatefulWidget {
+  AuthenticationService autService = new AuthenticationService();
   @override
-  List b;
-  _TripPageState createState() => _TripPageState();
+  _RecentTripsState createState() => _RecentTripsState();
 }
 
-class _TripPageState extends State<TripPage> {
+class _RecentTripsState extends State<RecentTrips> {
   double _rating;
 
   double _initialRating = 3;
@@ -26,19 +30,29 @@ class _TripPageState extends State<TripPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () { Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MainPage())); },
+
+            );
+          },
+        ),
         backgroundColor: Colors.blue,
         title: Text(
-          "Available Trips",
+          "Recent Trips",
           style: new TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
             fontFamily: 'Satisfy',
           ),
         ),
-        //automaticallyImplyLeading: false,
+
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('tours').snapshots(),
+        stream: FirebaseFirestore.instance.collection('users').doc(Login.newUser.id).collection('recent_trips').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -64,44 +78,32 @@ class _TripPageState extends State<TripPage> {
                         new Expanded(
                             child: new Center(
                                 child: new Column(
-                          children: <Widget>[
-                            new SizedBox(height: 15.0),
-                            Center(
-                              child: new Text(
-                                "${document['tour_name']}\n",
-                                style: new TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            new Text("Tour Date: ${document['tour_date']}\n"),
-                            new Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  document['rate_number']==0?
-                                  _ratingBar(document['tour_rate'].toDouble(),1):
-                                  _ratingBar(document['tour_rate'].toDouble(),document['rate_number'].toDouble())
-                                ],
-                              ),
-                            ),
-                          ],
-                        )))
+                                  children: <Widget>[
+                                    new SizedBox(height: 15.0),
+                                    Center(
+                                      child: new Text(
+                                        "${document['tour_name']}\n",
+                                        style: new TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )))
                       ],
                     ),
                     elevation: 2.0,
                     margin: EdgeInsets.all(5.0),
                   ),
                   onTap: () {
-                    Homepage.tour_name = document['tour_name'];
-                    Homepage.tour_rate = document['tour_rate'].toDouble();
-                    Homepage.rate_number = document['rate_number'].toDouble();
+                    if(!document['is_rated']) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Rating(tour_name: document['tour_name'],tour_rate: document['tour_rate'],rate_number: document['rate_number'],tour_id: document['tour_id'],)));
 
 
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Homepage()));
+
+                    }
                   },
                 ),
               );
@@ -112,9 +114,9 @@ class _TripPageState extends State<TripPage> {
     );
   }
 
-  Widget _ratingBar(double totalrate,double number) {
+  Widget _ratingBar(double rate) {
     return RatingBar.builder(
-      initialRating: totalrate/number,
+      initialRating: rate,
       minRating: 1,
       allowHalfRating: true,
       unratedColor: Colors.amber.withAlpha(50),
@@ -125,27 +127,27 @@ class _TripPageState extends State<TripPage> {
         Icons.star,
         color: Colors.amber,
       ),
-      /*onRatingUpdate: (docRate) {
+      onRatingUpdate: (docRate) {
         setState(() {
           _rating = docRate;
         });
-      },*/
+      },
       updateOnDrag: true,
     );
   }
 
   Widget _heading(String text) => Column(
-        children: [
-          Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: 16.0,
-            ),
-          ),
-          SizedBox(
-            height: 16.0,
-          ),
-        ],
-      );
+    children: [
+      Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 16.0,
+        ),
+      ),
+      SizedBox(
+        height: 16.0,
+      ),
+    ],
+  );
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'ARPage.dart';
-import 'TripPage.dart';
 import 'tripInfoPage.dart';
 
 class Homepage extends StatefulWidget {
   @override
-  static String asd;
+  static String tour_name;
+  static double tour_rate;
+  static double rate_number;
+  static List trip_locations;
   _HomepageState createState() => _HomepageState();
 }
 
@@ -38,7 +40,9 @@ class _HomepageState extends State<Homepage> {
         controller: pageControll,
         children: <Widget>[
           TripInfoPage(
-            cityName: Homepage.asd,
+            tour_name: Homepage.tour_name,
+            tour_rate: Homepage.tour_rate,
+            rate_number: Homepage.rate_number,
           ),
           ARPage(),
         ],

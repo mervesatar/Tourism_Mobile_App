@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:project/MainPage.dart';
 import 'authentication.dart';
 import 'login.dart';
 
-class signup extends StatefulWidget {
+class update extends StatefulWidget {
   AuthenticationService authService = new AuthenticationService();
   @override
-  _signup createState() => _signup();
+  _update createState() => _update();
 }
 
-class _signup extends State<signup> {
+class _update extends State<update> {
   TextEditingController mailControl = new TextEditingController();
   TextEditingController passwordControl = new TextEditingController();
   TextEditingController nameControl = new TextEditingController();
@@ -18,18 +19,31 @@ class _signup extends State<signup> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    nameControl.text = Login.newUser.name;
+    interestControl.text = Login.newUser.interest;
+    ageControl.text = Login.newUser.age;
+    surnameControl.text = Login.newUser.surname;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent ,
+      backgroundColor: Colors.greenAccent,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Sign Up', style: TextStyle(
-          fontFamily: 'Satisfy',
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
-        ),),
+        title: Text(
+          'Update',
+          style: TextStyle(
+            fontFamily: 'Satisfy',
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+        ),
         backgroundColor: Colors.lightBlue,
       ),
       body: Container(
@@ -39,18 +53,21 @@ class _signup extends State<signup> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
-                  height: (MediaQuery.of(context).size.height)/7,
-                  width: (MediaQuery.of(context).size.width)/2,
-
-                  child: Center(child: Text('Please Enter Your Personal Information', style: TextStyle(
-                    fontFamily: 'Satisfy',
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                    //..style = PaintingStyle.stroke
-                    //..strokeWidth = 2
-                      ..color = Colors.white,
-                  ),)),
+                  height: (MediaQuery.of(context).size.height) / 7,
+                  width: (MediaQuery.of(context).size.width) / 2,
+                  child: Center(
+                      child: Text(
+                    'Please Enter Your Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Satisfy',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        //..style = PaintingStyle.stroke
+                        //..strokeWidth = 2
+                        ..color = Colors.white,
+                    ),
+                  )),
                 ),
               ),
               SizedBox(
@@ -60,10 +77,12 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: nameControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'First Name',
-                      hintText: 'hasan'),
+                      hintText: Login.newUser.name),
                 ),
               ),
               SizedBox(
@@ -73,39 +92,12 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: surnameControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Last Name',
-                      hintText: 'akçay'),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-
-                  //obscureText: true,
-                  controller: mailControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: 'E-mail',
-                      hintText: 'mustafademiroz@hotmail.com'),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  controller: passwordControl,
-                  obscureText: true,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: '123456'),
+                      hintText: Login.newUser.surname),
                 ),
               ),
               SizedBox(
@@ -115,10 +107,12 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: interestControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Interest',
-                      hintText: 'fun,history,art,food'),
+                      hintText: Login.newUser.interest),
                 ),
               ),
               SizedBox(
@@ -128,10 +122,12 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: ageControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Age',
-                      hintText: '20'),
+                      hintText: Login.newUser.age),
                 ),
               ),
               SizedBox(
@@ -142,8 +138,7 @@ class _signup extends State<signup> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.blue)
-                  ),
+                      side: BorderSide(color: Colors.blue)),
                   color: Colors.lightBlue,
                   textColor: Colors.white,
                   disabledColor: Colors.grey,
@@ -151,25 +146,27 @@ class _signup extends State<signup> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.greenAccent,
                   onPressed: () async {
-                    signup()
+                    update()
                         .authService
-                        .signupProcess(
-                      mailControl.text,
-                      passwordControl.text,
-                      nameControl.text,
-                      surnameControl.text,
-                      interestControl.text,
-                      ageControl.text,
-                    )
+                        .updateProcess(
+                          Login.newUser.id,
+                          nameControl.text,
+                          surnameControl.text,
+                          interestControl.text,
+                          ageControl.text,
+                        )
                         .then((value) {
                       //Scaffold.of(context).showSnackBar(SnackBar(
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
-                          content: Text('Sign Up Successfully'),
+                          content: Text('Updated Successfully'),
                           backgroundColor: Colors.green,
                           duration: Duration(seconds: 2)));
-
+                      Login.newUser.name = nameControl.text;
+                      Login.newUser.surname = surnameControl.text;
+                      Login.newUser.interest = interestControl.text;
+                      Login.newUser.age = ageControl.text;
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Login()));
+                          MaterialPageRoute(builder: (context) => MainPage()));
                     }).catchError((Error) {
                       print(Error);
                     });
@@ -177,7 +174,7 @@ class _signup extends State<signup> {
                   child: Column(
                     children: [
                       Text(
-                        "Sign Up",
+                        "Update",
                         style: TextStyle(
                           fontSize: 20.0,
                           fontFamily: 'Satisfy',
