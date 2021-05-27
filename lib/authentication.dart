@@ -94,7 +94,7 @@ class AuthenticationService {
     }
   }
 
-  Future<String> updateProcess(String id, String name, String surname, String interest, String age) async {
+  Future<String> updateUserInfo(String id, String name, String surname, String interest, String age) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(id).update({
         'name' : name,
@@ -118,7 +118,7 @@ class AuthenticationService {
     }
   }
 
-  Future<String> updateProcess2(String id, bool is_rated) async {
+  Future<String> updateIsRated(String id, bool is_rated) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(Login.newUser.id).collection('recent_trips').doc(id).update({
         'is_rated' : is_rated,
@@ -141,20 +141,18 @@ class AuthenticationService {
 
 
 
-  Future<String> add(String tour_name,double tour_rate, double rate_number) async {
+  Future<String> addtoRecentTours(String tour_name,double tour_rate, double rate_number) async {
     DocumentReference ref = FirebaseFirestore.instance.collection("users").doc(Login.newUser.id).collection('recent_trips').doc();
 
     ref.set({
       "tour_id" : ref.id,
       "tour_name" : tour_name,
-      "tour_rate" : tour_rate,
       "is_rated" : false,
-      "rate_number" : rate_number,
 
     });
   }
 
-  Future<String> updateProcess3(String id,tour_rate,rate_number) async {
+  Future<String> updateRating(String id,tour_rate,rate_number) async {
     try {
       await FirebaseFirestore.instance.collection('tours').doc(id).update({
         'tour_rate' : tour_rate,

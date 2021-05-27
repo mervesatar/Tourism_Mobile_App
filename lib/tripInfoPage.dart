@@ -8,6 +8,7 @@ import 'package:google_place/google_place.dart' as gp;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'authentication.dart';
+import 'login.dart';
 
 
 
@@ -79,7 +80,9 @@ class _TripInfoPageState extends State<TripInfoPage> {
   }
 
   @override
+  bool a;
   void initState() {
+    a=true;
     String apiKey = DotEnv().env['AIzaSyCA3b6uYvyVpMxZZiAnyvmebNA7tXcMXTs'];
     googlePlace = gp.GooglePlace(apiKey);
     super.initState();
@@ -96,16 +99,28 @@ class _TripInfoPageState extends State<TripInfoPage> {
         actions: <Widget>[
           FlatButton(
             textColor: Colors.white,
-            onPressed: () {
-              TripInfoPage()
-                  .autService
-                  .add(
-                  tour_name, tour_rate, rate_number
-              )
-                  .then((value) {
-              }).catchError((Error) {
-                print(Error);
+            onPressed: ()async {
+              var temp = await FirebaseFirestore.instance
+                  .collection('users').doc(Login.newUser.id).collection('recent_trips')
+                  .get();
+
+              temp.docs.forEach((doc) {
+                if (doc["tour_name"] == tour_name) {
+                  setState(() {
+                    a=false;
+                  });
+                }
               });
+              if(a){
+                TripInfoPage()
+                    .autService
+                    .addtoRecentTours(
+                    tour_name, tour_rate, rate_number
+                )
+                    .then((value) {
+                }).catchError((Error) {
+                  print(Error);
+                });}
             },
             child: Text("Take the Tour"),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),

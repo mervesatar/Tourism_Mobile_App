@@ -9,23 +9,19 @@ import 'authentication.dart';
 
 class Rating extends StatefulWidget {
   final String tour_name;
-  final double tour_rate;
-  final double rate_number;
   final String tour_id;
 
-  Rating({@required this.tour_name, this.tour_rate, this.rate_number, this.tour_id});
+  Rating({@required this.tour_name,this.tour_id});
   AuthenticationService autService = new AuthenticationService();
   @override
-  _RatingState createState() => _RatingState(tour_name,tour_rate,rate_number,tour_id);
+  _RatingState createState() => _RatingState(tour_name,tour_id);
 }
 
 class _RatingState extends State<Rating> {
   final String tour_name;
-  final double tour_rate;
-  final double rate_number;
   final String tour_id;
 
-  _RatingState(this.tour_name,this.tour_rate,this.rate_number,this.tour_id);
+  _RatingState(this.tour_name,this.tour_id);
 
 
   @override
@@ -67,13 +63,13 @@ class _RatingState extends State<Rating> {
       ),
       submitButton: 'Submit',
       onCancelled: () => print('cancelled'),
-      onSubmitted: (response) {
+      onSubmitted: (response) async {
         double rate =response.rating.toDouble();
-        rate += tour_rate;
-        double number =rate_number+1;
+
+        double number;
         Rating()
             .autService
-            .updateProcess2(
+            .updateIsRated(
             tour_id,true
         )
             .then((value) {
@@ -81,10 +77,20 @@ class _RatingState extends State<Rating> {
           print(Error);
         });
 
-
+        var temp = await FirebaseFirestore.instance
+            .collection('tours')
+            .get();
+        temp.docs.forEach((element) {
+          setState(() {
+              if(element['tour_name']==tour_name){
+                rate+=element['tour_rate'].toDouble();
+                number=element['rate_number'].toDouble()+1;
+              }
+          });
+        });
         Rating()
             .autService
-            .updateProcess3(
+            .updateRating(
             tour_name,rate,number
         )
             .then((value) {

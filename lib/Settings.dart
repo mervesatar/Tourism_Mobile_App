@@ -148,7 +148,7 @@ class _update extends State<update> {
                   onPressed: () async {
                     update()
                         .authService
-                        .updateProcess(
+                        .updateUserInfo(
                           Login.newUser.id,
                           nameControl.text,
                           surnameControl.text,

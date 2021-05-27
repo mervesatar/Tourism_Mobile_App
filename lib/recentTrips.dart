@@ -99,7 +99,7 @@ class _RecentTripsState extends State<RecentTrips> {
                   onTap: () {
                     if(!document['is_rated']) {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Rating(tour_name: document['tour_name'],tour_rate: document['tour_rate'],rate_number: document['rate_number'],tour_id: document['tour_id'],)));
+                          MaterialPageRoute(builder: (context) => Rating(tour_name: document['tour_name'],tour_id: document['tour_id'],)));
 
 
 
