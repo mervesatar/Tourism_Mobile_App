@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/TripPage.dart';
 import 'package:project/recentTrips.dart';
+import 'package:project/search_trips.dart';
 
 import 'Settings.dart';
 
@@ -151,10 +152,10 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RecTrips()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchTrips()));
                     },
                   ),
                 ),

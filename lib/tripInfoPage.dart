@@ -24,7 +24,7 @@ class TripInfoPage extends StatefulWidget {
 }
 
 class _TripInfoPageState extends State<TripInfoPage> {
-  final tour_name;
+  final String tour_name;
   final double tour_rate;
   final double rate_number;
 
