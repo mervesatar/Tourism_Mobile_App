@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project/MainPage.dart';
-import 'authentication.dart';
-import 'login.dart';
+import '../authentication.dart';
+import '../login.dart';
 
-class update extends StatefulWidget {
+class UpdateProfile extends StatefulWidget {
   AuthenticationService authService = new AuthenticationService();
   @override
-  _update createState() => _update();
+  _UpdateProfile createState() => _UpdateProfile();
 }
 
-class _update extends State<update> {
+class _UpdateProfile extends State<UpdateProfile> {
   TextEditingController mailControl = new TextEditingController();
   TextEditingController passwordControl = new TextEditingController();
   TextEditingController nameControl = new TextEditingController();
@@ -146,7 +146,7 @@ class _update extends State<update> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.greenAccent,
                   onPressed: () async {
-                    update()
+                    UpdateProfile()
                         .authService
                         .updateUserInfo(
                           Login.newUser.id,

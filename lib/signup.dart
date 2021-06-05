@@ -21,15 +21,18 @@ class _signup extends State<signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent ,
+      backgroundColor: Colors.greenAccent,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Sign Up', style: TextStyle(
-          fontFamily: 'Satisfy',
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
-        ),),
+        title: Text(
+          'Sign Up',
+          style: TextStyle(
+            fontFamily: 'Satisfy',
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+        ),
         backgroundColor: Colors.lightBlue,
       ),
       body: Container(
@@ -39,18 +42,21 @@ class _signup extends State<signup> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
-                  height: (MediaQuery.of(context).size.height)/7,
-                  width: (MediaQuery.of(context).size.width)/2,
-
-                  child: Center(child: Text('Please Enter Your Personal Information', style: TextStyle(
-                    fontFamily: 'Satisfy',
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                    //..style = PaintingStyle.stroke
-                    //..strokeWidth = 2
-                      ..color = Colors.white,
-                  ),)),
+                  height: (MediaQuery.of(context).size.height) / 7,
+                  width: (MediaQuery.of(context).size.width) / 2,
+                  child: Center(
+                      child: Text(
+                    'Please Enter Your Personal Information',
+                    style: TextStyle(
+                      fontFamily: 'Satisfy',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        //..style = PaintingStyle.stroke
+                        //..strokeWidth = 2
+                        ..color = Colors.white,
+                    ),
+                  )),
                 ),
               ),
               SizedBox(
@@ -60,7 +66,9 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: nameControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'First Name',
                       hintText: 'hasan'),
@@ -73,7 +81,9 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: surnameControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Last Name',
                       hintText: 'akçay'),
@@ -85,10 +95,11 @@ class _signup extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
-
                   //obscureText: true,
                   controller: mailControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'E-mail',
                       hintText: 'mustafademiroz@hotmail.com'),
@@ -102,7 +113,9 @@ class _signup extends State<signup> {
                 child: TextField(
                   controller: passwordControl,
                   obscureText: true,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                       hintText: '123456'),
@@ -115,7 +128,9 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: interestControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Interest',
                       hintText: 'fun,history,art,food'),
@@ -128,7 +143,9 @@ class _signup extends State<signup> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: TextField(
                   controller: ageControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.7),
+                      filled: true,
                       border: OutlineInputBorder(),
                       labelText: 'Age',
                       hintText: '20'),
@@ -142,8 +159,7 @@ class _signup extends State<signup> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.blue)
-                  ),
+                      side: BorderSide(color: Colors.blue)),
                   color: Colors.lightBlue,
                   textColor: Colors.white,
                   disabledColor: Colors.grey,
@@ -154,13 +170,13 @@ class _signup extends State<signup> {
                     signup()
                         .authService
                         .signupProcess(
-                      mailControl.text,
-                      passwordControl.text,
-                      nameControl.text,
-                      surnameControl.text,
-                      interestControl.text,
-                      ageControl.text,
-                    )
+                          mailControl.text,
+                          passwordControl.text,
+                          nameControl.text,
+                          surnameControl.text,
+                          interestControl.text,
+                          ageControl.text,
+                        )
                         .then((value) {
                       //Scaffold.of(context).showSnackBar(SnackBar(
                       _scaffoldKey.currentState.showSnackBar(SnackBar(

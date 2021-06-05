@@ -8,7 +8,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
-
 class Login extends StatefulWidget {
   static String email;
 
@@ -40,167 +39,169 @@ class _LoginState extends State<Login> {
     mailControl.text = Login.email;
   }
 
-
-
   @override
   void dispose() {
     _connectivitySubscription.cancel();
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         child: Center(
           child: isloading
               ? CircularProgressIndicator()
               : ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 100, 8, 0),
-                child: Container(
-                  height: (MediaQuery.of(context).size.height) / 7,
-                  width: (MediaQuery.of(context).size.width) / 1.2,
-                  child: Center(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 100, 8, 0),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height) / 7,
+                        width: (MediaQuery.of(context).size.width) / 1.2,
+                        child: Center(
+                            child: Text(
+                          'TourMe',
+                          style: TextStyle(
+                            fontFamily: 'Merienda',
+                            fontSize: 70,
+                            foreground: Paint()
+                              //..style = PaintingStyle.stroke
+                              //..strokeWidth = 3
+                              ..color = Colors.lightBlue,
+                          ),
+                        )),
+                      ),
+                    ),
+                    Center(
                       child: Text(
-                        'TourMe',
+                        'Your Personal Tour Guide!',
                         style: TextStyle(
-                          fontFamily: 'Merienda',
-                          fontSize: 70,
-                          foreground: Paint()
-                          //..style = PaintingStyle.stroke
-                          //..strokeWidth = 3
-                            ..color = Colors.lightBlue,
+                          fontFamily: 'Satisfy',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      )),
-                ),
-              ),
-              Center(
-                child: Text('Your Personal Tour Guide!', style: TextStyle(
-                  fontFamily: 'Satisfy',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  //obscureText: true,
-                  controller: mailControl,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
-                    border: OutlineInputBorder(),
-                    labelText: 'E-mail',
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  controller: passwordControl,
-                  obscureText: true,
-                  decoration: InputDecoration(fillColor: Colors.white.withOpacity(0.7),filled: true,
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) / 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.blue)
-                  ),
-                  color: Colors.lightBlue,
-                  textColor: Colors.black,
-                  disabledColor: Colors.grey,
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.greenAccent,
-                  onPressed: () async {
-                    if (_connectionStatus == 'ConnectivityResult.none'){
-                      print('hi');
-                      showSnackBar(context);
-                    } else {
-                      setState(() {
-                        isloading = true;
-                      });
-
-                      Login()
-                          .autService
-                          .signInProccess(
-                          mailControl.text, passwordControl.text)
-                          .then((value) {
-                        print(value.name);
-
-                        setState(() {
-                          Login.newUser = value;
-
-                          isloading = false;
-                        });
-
-                        print(value);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                      }).catchError((Error) {
-                        print(Error);
-                      }); }
-                  },
-                  child: Text(
-                    "Sign In",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: 'Satisfy',
-                      fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.blue)
-                  ),
-                  color: Colors.lightBlue,
-                  textColor: Colors.black,
-                  disabledColor: Colors.grey,
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.greenAccent,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => signup()));
-                  },
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: 'Satisfy',
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.height) / 12,
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                      child: TextField(
+                        //obscureText: true,
+                        controller: mailControl,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.7),
+                          filled: true,
+                          border: OutlineInputBorder(),
+                          labelText: 'E-mail',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.height) / 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                      child: TextField(
+                        controller: passwordControl,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white.withOpacity(0.7),
+                          filled: true,
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.height) / 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue)),
+                        color: Colors.lightBlue,
+                        textColor: Colors.black,
+                        disabledColor: Colors.grey,
+                        disabledTextColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        splashColor: Colors.greenAccent,
+                        onPressed: () async {
+                          if (_connectionStatus == 'ConnectivityResult.none') {
+                            print('hi');
+                            showSnackBar(context);
+                          } else {
+                            setState(() {
+                              isloading = true;
+                            });
 
+                            Login()
+                                .autService
+                                .signInProccess(
+                                    mailControl.text, passwordControl.text)
+                                .then((value) {
+                              print(value.name);
+
+                              setState(() {
+                                Login.newUser = value;
+
+                                isloading = false;
+                              });
+
+                              print(value);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage()));
+                            }).catchError((Error) {
+                              print(Error);
+                            });
+                          }
+                        },
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Satisfy',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(80, 8, 80, 8),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue)),
+                        color: Colors.lightBlue,
+                        textColor: Colors.black,
+                        disabledColor: Colors.grey,
+                        disabledTextColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        splashColor: Colors.greenAccent,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => signup()));
+                        },
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Satisfy',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -211,6 +212,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     switch (result) {
       case ConnectivityResult.wifi:
@@ -223,6 +225,7 @@ class _LoginState extends State<Login> {
         break;
     }
   }
+
   Future<void> initConnectivity() async {
     ConnectivityResult result = ConnectivityResult.none;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -231,9 +234,6 @@ class _LoginState extends State<Login> {
     } on PlatformException catch (e) {
       print(e.toString());
     }
-
-
-
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -244,6 +244,7 @@ class _LoginState extends State<Login> {
 
     return _updateConnectionStatus(result);
   }
+
   void showSnackBar(BuildContext context) {
     final snackBar = SnackBar(
       content: const Text('You are not connected to internet.'),

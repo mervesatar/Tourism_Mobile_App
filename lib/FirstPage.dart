@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class FirstPage extends StatelessWidget {
   const FirstPage({Key key}) : super(key: key);
 
@@ -8,8 +7,7 @@ class FirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text("First Page",style: TextStyle(fontSize: 20.0))
-        ,
+        child: Text("First Page", style: TextStyle(fontSize: 20.0)),
       ),
     );
   }

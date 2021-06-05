@@ -5,8 +5,7 @@ import 'package:project/MainPage.dart';
 import 'package:project/login.dart';
 import 'package:project/rating.dart';
 import 'authentication.dart';
-
-import 'homepage.dart';
+import 'package:get/get.dart';
 
 class RecentTrips extends StatefulWidget {
   AuthenticationService autService = new AuthenticationService();
@@ -34,25 +33,29 @@ class _RecentTripsState extends State<RecentTrips> {
           builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () { Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainPage())); },
-
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
+              },
             );
           },
         ),
         backgroundColor: Colors.blue,
         title: Text(
-          "Recent Trips",
+          'recent_trips'.tr,
           style: new TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
             fontFamily: 'Satisfy',
           ),
         ),
-
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('users').doc(Login.newUser.id).collection('recent_trips').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(Login.newUser.id)
+            .collection('recent_trips')
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -78,31 +81,33 @@ class _RecentTripsState extends State<RecentTrips> {
                         new Expanded(
                             child: new Center(
                                 child: new Column(
-                                  children: <Widget>[
-                                    new SizedBox(height: 15.0),
-                                    Center(
-                                      child: new Text(
-                                        "${document['tour_name']}\n",
-                                        style: new TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )))
+                          children: <Widget>[
+                            new SizedBox(height: 15.0),
+                            Center(
+                              child: new Text(
+                                "${document['tour_name']}\n",
+                                style: new TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )))
                       ],
                     ),
                     elevation: 2.0,
                     margin: EdgeInsets.all(5.0),
                   ),
                   onTap: () {
-                    if(!document['is_rated']) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Rating(tour_name: document['tour_name'],tour_id: document['tour_id'],)));
-
-
-
+                    if (!document['is_rated']) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Rating(
+                                    tour_name: document['tour_name'],
+                                    tour_id: document['tour_id'],
+                                  )));
                     }
                   },
                 ),
@@ -137,17 +142,17 @@ class _RecentTripsState extends State<RecentTrips> {
   }
 
   Widget _heading(String text) => Column(
-    children: [
-      Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 16.0,
-        ),
-      ),
-      SizedBox(
-        height: 16.0,
-      ),
-    ],
-  );
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 16.0,
+            ),
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+        ],
+      );
 }

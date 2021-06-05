@@ -1,24 +1,24 @@
-
 import 'package:flutter/material.dart';
 import 'package:project/search_detail.dart';
-
+import 'package:get/get.dart';
 import 'MainPage.dart';
 
 class SearchTrips extends StatelessWidget {
-String category="";
+  String category = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage()),
-            );
-          }
-      ),title: Text("Search Trips"),),
-
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MainPage()),
+              );
+            }),
+        title: Text('search_trips'.tr),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,7 +29,6 @@ String category="";
                 Container(
                   height: (MediaQuery.of(context).size.height) / 4,
                   width: (MediaQuery.of(context).size.width) / 2.5,
-
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                     image: DecorationImage(
@@ -44,7 +43,7 @@ String category="";
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'History',
+                      'history'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -53,9 +52,12 @@ String category="";
                       ),
                     ),
                     onPressed: () {
-                      category="history";
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SearchDetail( category: 'history')));
+                      category = "history";
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchDetail(category: 'history')));
                     },
                   ),
                 ),
@@ -65,7 +67,6 @@ String category="";
                 Container(
                   height: (MediaQuery.of(context).size.height) / 4,
                   width: (MediaQuery.of(context).size.width) / 2.5,
-                 
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                     image: DecorationImage(
@@ -80,7 +81,7 @@ String category="";
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Text(
-                      'Fun',
+                      'fun'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -89,13 +90,14 @@ String category="";
                       ),
                     ),
                     onPressed: () {
-                      category="fun";
-                       Navigator.push(
-                      context,
+                      category = "fun";
+                      Navigator.push(
+                          context,
                           MaterialPageRoute(
-                              builder: (context) => SearchDetail( category: 'fun',)));
-                              print(category);
-
+                              builder: (context) => SearchDetail(
+                                    category: 'fun',
+                                  )));
+                      print(category);
                     },
                   ),
                 ),
@@ -108,7 +110,6 @@ String category="";
               padding: const EdgeInsets.only(left: 23.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: <Widget>[
                   Container(
                     height: (MediaQuery.of(context).size.height) / 4,
@@ -127,7 +128,7 @@ String category="";
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        'Food',
+                        'food'.tr,
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Satisfy',
@@ -136,11 +137,13 @@ String category="";
                         ),
                       ),
                       onPressed: () {
-                        category="food";
+                        category = "food";
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchDetail( category: 'food',)));
+                                builder: (context) => SearchDetail(
+                                      category: 'food',
+                                    )));
                       },
                     ),
                   ),
@@ -164,7 +167,7 @@ String category="";
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        'Art',
+                        'art'.tr,
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Satisfy',
@@ -173,18 +176,19 @@ String category="";
                         ),
                       ),
                       onPressed: () {
-                        category="art";
-                       Navigator.push(
+                        category = "art";
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchDetail(category: 'art',)));
+                                builder: (context) => SearchDetail(
+                                      category: 'art',
+                                    )));
                       },
                     ),
                   ),
-                   SizedBox(
+                  SizedBox(
                     width: (MediaQuery.of(context).size.width) / 15,
                   ),
-                  
                 ],
               ),
             ),
@@ -195,7 +199,6 @@ String category="";
               padding: const EdgeInsets.only(left: 23.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: <Widget>[
                   Container(
                     height: (MediaQuery.of(context).size.height) / 4,
@@ -203,7 +206,7 @@ String category="";
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       image: DecorationImage(
-                        image: AssetImage('images/five-stars.jpg'),
+                        image: AssetImage('images/toprated.jpg'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                             Colors.white.withOpacity(0.6), BlendMode.dstATop),
@@ -214,7 +217,7 @@ String category="";
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        'Highly Rated Tours',
+                        'high_rated'.tr,
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Satisfy',
@@ -223,11 +226,13 @@ String category="";
                         ),
                       ),
                       onPressed: () {
-                        category="highly rated tours";
+                        category = "highly rated tours";
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchDetail( category: 'Highly Rated Tours',)));
+                                builder: (context) => SearchDetail(
+                                      category: 'Highly Rated Tours',
+                                    )));
                       },
                     ),
                   ),
@@ -251,7 +256,7 @@ String category="";
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        'Recommended',
+                        'Recommended'.tr,
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Satisfy',
@@ -260,18 +265,19 @@ String category="";
                         ),
                       ),
                       onPressed: () {
-                        category="recommended";
+                        category = "recommended";
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchDetail(category: 'Recommended',)));
+                                builder: (context) => SearchDetail(
+                                      category: 'Recommended',
+                                    )));
                       },
                     ),
                   ),
                   SizedBox(
                     width: (MediaQuery.of(context).size.width) / 15,
                   ),
-
                 ],
               ),
             ),

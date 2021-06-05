@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'homepage.dart';
+import 'package:get/get.dart';
 
 class TripPage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _TripPageState extends State<TripPage> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "Available Trips",
+          'hello_title'.tr,
           style: new TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -75,15 +76,20 @@ class _TripPageState extends State<TripPage> {
                                 ),
                               ),
                             ),
-                            new Text("Tour Date: ${document['tour_date']}\n"),
+                            new Text('tour_date'.tr +
+                                " : " +
+                                "${document['tour_date']}\n"),
                             new Container(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  document['rate_number']==0?
-                                  _ratingBar(document['tour_rate'].toDouble(),1):
-                                  _ratingBar(document['tour_rate'].toDouble(),document['rate_number'].toDouble())
+                                  document['rate_number'] == 0
+                                      ? _ratingBar(
+                                          document['tour_rate'].toDouble(), 1)
+                                      : _ratingBar(
+                                          document['tour_rate'].toDouble(),
+                                          document['rate_number'].toDouble())
                                 ],
                               ),
                             ),
@@ -99,7 +105,6 @@ class _TripPageState extends State<TripPage> {
                     Homepage.tour_rate = document['tour_rate'].toDouble();
                     Homepage.rate_number = document['rate_number'].toDouble();
 
-
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homepage()));
                   },
@@ -112,9 +117,9 @@ class _TripPageState extends State<TripPage> {
     );
   }
 
-  Widget _ratingBar(double totalrate,double number) {
+  Widget _ratingBar(double totalrate, double number) {
     return RatingBar.builder(
-      initialRating: totalrate/number,
+      initialRating: totalrate / number,
       minRating: 1,
       allowHalfRating: true,
       unratedColor: Colors.amber.withAlpha(50),

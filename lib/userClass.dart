@@ -1,5 +1,4 @@
-class userClass{
-
+class userClass {
   String email;
   String id;
   String name;
@@ -7,6 +6,12 @@ class userClass{
   String interest;
   String age;
 
-
-  userClass({this.id, this.name, this.surname, this.interest, this.email, this.age,});
+  userClass({
+    this.id,
+    this.name,
+    this.surname,
+    this.interest,
+    this.email,
+    this.age,
+  });
 }

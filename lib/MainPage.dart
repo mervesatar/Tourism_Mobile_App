@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project/Settings/settings.dart';
 import 'package:project/TripPage.dart';
 import 'package:project/recentTrips.dart';
 import 'package:project/search_trips.dart';
-
-import 'Settings.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -34,7 +34,7 @@ class MainPage extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Your Personal Tour Guide!',
+                'hello_title'.tr,
                 style: TextStyle(
                   fontFamily: 'Satisfy',
                   fontSize: 20,
@@ -68,7 +68,7 @@ class MainPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'Available Trips',
+                      'available_trips'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -102,7 +102,7 @@ class MainPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'Recent Trips',
+                      'recent_trips'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -111,8 +111,8 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                       Navigator.push(
-                      context,
+                      Navigator.push(
+                          context,
                           MaterialPageRoute(
                               builder: (context) => RecentTrips()));
                     },
@@ -143,7 +143,7 @@ class MainPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'Search Trips',
+                      'search_trips'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -179,7 +179,7 @@ class MainPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      'Settings',
+                      'settings'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Satisfy',
@@ -188,10 +188,10 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                     Navigator.push(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => update()));
+                              builder: (context) => SettingsOnePage()));
                     },
                   ),
                 ),

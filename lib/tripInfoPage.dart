@@ -10,8 +10,6 @@ import 'dart:convert';
 import 'authentication.dart';
 import 'login.dart';
 
-
-
 class TripInfoPage extends StatefulWidget {
   final String tour_name;
   final double tour_rate;
@@ -20,7 +18,8 @@ class TripInfoPage extends StatefulWidget {
   TripInfoPage({@required this.tour_name, this.tour_rate, this.rate_number});
   AuthenticationService autService = new AuthenticationService();
   @override
-  _TripInfoPageState createState() => _TripInfoPageState(tour_name,tour_rate,rate_number);
+  _TripInfoPageState createState() =>
+      _TripInfoPageState(tour_name, tour_rate, rate_number);
 }
 
 class _TripInfoPageState extends State<TripInfoPage> {
@@ -28,8 +27,7 @@ class _TripInfoPageState extends State<TripInfoPage> {
   final double tour_rate;
   final double rate_number;
 
-
-  _TripInfoPageState(this.tour_name,this.tour_rate,this.rate_number);
+  _TripInfoPageState(this.tour_name, this.tour_rate, this.rate_number);
   reviews temprev = new reviews();
   placeID tempid = new placeID();
   Location temploc = new Location();
@@ -64,7 +62,6 @@ class _TripInfoPageState extends State<TripInfoPage> {
 
       reviewsList.add(review);
 
-
       print(review.author_name);
       print(review.text);
     });
@@ -82,7 +79,7 @@ class _TripInfoPageState extends State<TripInfoPage> {
   @override
   bool a;
   void initState() {
-    a=true;
+    a = true;
     String apiKey = DotEnv().env['AIzaSyCA3b6uYvyVpMxZZiAnyvmebNA7tXcMXTs'];
     googlePlace = gp.GooglePlace(apiKey);
     super.initState();
@@ -99,34 +96,34 @@ class _TripInfoPageState extends State<TripInfoPage> {
         actions: <Widget>[
           FlatButton(
             textColor: Colors.white,
-            onPressed: ()async {
+            onPressed: () async {
               var temp = await FirebaseFirestore.instance
-                  .collection('users').doc(Login.newUser.id).collection('recent_trips')
+                  .collection('users')
+                  .doc(Login.newUser.id)
+                  .collection('recent_trips')
                   .get();
 
               temp.docs.forEach((doc) {
                 if (doc["tour_name"] == tour_name) {
                   setState(() {
-                    a=false;
+                    a = false;
                   });
                 }
               });
-              if(a){
+              if (a) {
                 TripInfoPage()
                     .autService
-                    .addtoRecentTours(
-                    tour_name, tour_rate, rate_number
-                )
-                    .then((value) {
-                }).catchError((Error) {
+                    .addtoRecentTours(tour_name, tour_rate, rate_number)
+                    .then((value) {})
+                    .catchError((Error) {
                   print(Error);
-                });}
+                });
+              }
             },
             child: Text("Take the Tour"),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
         ],
-
         backgroundColor: Colors.blue,
         title: Text(
           "${tour_name}",
@@ -137,118 +134,119 @@ class _TripInfoPageState extends State<TripInfoPage> {
           ),
         ),
       ),
-
-        body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('tours').doc(tour_name).collection('locations').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return ListView(
-
-              children: snapshot.data.docs.map((document) {
-                return Column(
-                  children: [
-                    ListTile(
-                      title: Text(document['location_name']),
-                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(Colors.lightBlue),
-                          ),
-                          child: Text('Go To Map'),
-                          onPressed: () async {
-                            if (ffl.isEmpty == false) {
-                              ffl.clear();
-                            } else {}
-                            ffl = await getList(document['location_name']);
-
-                            print(ffl[0].latitude);
-                            print(ffl[0].longitude);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapSample(
-                                      long: ffl[0].longitude,
-                                      lat: ffl[0].latitude,
-                                    )));
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(Colors.lightBlue),
-                          ),
-                          child: Text('Comments'),
-                          onPressed: () async {
-                            if (ffpID.isEmpty == false) {
-                              ffpID.clear();
-                            } else {}
-                            if (ffr.isEmpty == false) {
-                              ffr.clear();
-                            } else {}
-                            ffpID = await getPlaceID(document['location_name']);
-                            print(ffpID[0].place_id);
-                            ffr = await getReview(ffpID[0].place_id);
-                            showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SingleChildScrollView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  child: Column(
-                                    children: [
-                                      new ListTile(
-                                          leading: IconButton(
-                                              icon: Icon(Icons.arrow_back,
-                                                  color: Colors.lightBlue),
-                                              onPressed: () {
-                                                ffr.clear();
-                                                ffpID.clear();
-                                                Navigator.of(context).pop();
-                                              }),
-                                          title: Center(child: Text("Comments"))),
-                                      Container(
-                                        height: 250,
-                                        width: 500,
-                                        child: ListView.separated(
-                                          padding: EdgeInsets.all(20.0),
-                                          itemCount: ffr.length,
-                                          separatorBuilder:
-                                              (BuildContext context, int index) =>
-                                              Divider(
-                                                color: Colors.lightBlue,
-                                                thickness: 3,
-                                              ),
-                                          itemBuilder:
-                                              (BuildContext context, int ind) {
-                                            return ListTile(
-                                              title: Text(ffr[ind].author_name),
-                                              subtitle: Text(ffr[ind].text),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ]),
-                      onTap: () {},
-                    ),
-                  ],
-                );
-
-              }).toList(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('tours')
+            .doc(tour_name)
+            .collection('locations')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ),
+          }
+
+          return ListView(
+            children: snapshot.data.docs.map((document) {
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(document['location_name']),
+                    trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.lightBlue),
+                        ),
+                        child: Text('Go To Map'),
+                        onPressed: () async {
+                          if (ffl.isEmpty == false) {
+                            ffl.clear();
+                          } else {}
+                          ffl = await getList(document['location_name']);
+
+                          print(ffl[0].latitude);
+                          print(ffl[0].longitude);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapSample(
+                                        long: ffl[0].longitude,
+                                        lat: ffl[0].latitude,
+                                      )));
+                        },
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.lightBlue),
+                        ),
+                        child: Text('Comments'),
+                        onPressed: () async {
+                          if (ffpID.isEmpty == false) {
+                            ffpID.clear();
+                          } else {}
+                          if (ffr.isEmpty == false) {
+                            ffr.clear();
+                          } else {}
+                          ffpID = await getPlaceID(document['location_name']);
+                          print(ffpID[0].place_id);
+                          ffr = await getReview(ffpID[0].place_id);
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                child: Column(
+                                  children: [
+                                    new ListTile(
+                                        leading: IconButton(
+                                            icon: Icon(Icons.arrow_back,
+                                                color: Colors.lightBlue),
+                                            onPressed: () {
+                                              ffr.clear();
+                                              ffpID.clear();
+                                              Navigator.of(context).pop();
+                                            }),
+                                        title: Center(child: Text("Comments"))),
+                                    Container(
+                                      height: 250,
+                                      width: 500,
+                                      child: ListView.separated(
+                                        padding: EdgeInsets.all(20.0),
+                                        itemCount: ffr.length,
+                                        separatorBuilder:
+                                            (BuildContext context, int index) =>
+                                                Divider(
+                                          color: Colors.lightBlue,
+                                          thickness: 3,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int ind) {
+                                          return ListTile(
+                                            title: Text(ffr[ind].author_name),
+                                            subtitle: Text(ffr[ind].text),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ]),
+                    onTap: () {},
+                  ),
+                ],
+              );
+            }).toList(),
+          );
+        },
+      ),
     );
   }
 }
@@ -342,4 +340,3 @@ class reviews {
     );
   }
 }
-
