@@ -176,7 +176,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
             left: 00,
             child: IconButton(
               icon: Icon(
-                Icons.logout_outlined,
+                Icons.logout,
                 color: Colors.white,
               ),
               onPressed: () {
