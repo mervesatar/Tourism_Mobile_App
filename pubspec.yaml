@@ -43,6 +43,7 @@ dependencies:
   connectivity: ^3.0.4
   flutter_rating_bar: ^4.0.0
   font_awesome_flutter: ^9.0.0
+  provider: ^5.0.0
   
 
 

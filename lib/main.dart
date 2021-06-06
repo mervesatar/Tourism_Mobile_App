@@ -2,25 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:project/Settings/settings.dart';
-import 'package:project/TripPage.dart';
-import 'package:project/search_trips.dart';
+import 'package:provider/provider.dart';
+
+import 'Settings/theme_provider.dart';
 import 'language/localization_service.dart';
 
-import 'language/test2.dart';
 import 'login.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(GetMaterialApp(
-    title: '',
-    translations: LocalizationService(),
-    locale: Locale('en', 'US'),
-    fallbackLocale: Locale('en', 'US'),
-    home: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -44,26 +37,20 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Login(),
-    );
-  }
-}
-
-class NewScreen extends StatelessWidget {
-  final String payload;
-
-  NewScreen({
-    @required this.payload,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(payload),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          return GetMaterialApp(
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            title: '',
+            translations: LocalizationService(),
+            locale: Locale('en', 'US'),
+            fallbackLocale: Locale('en', 'US'),
+            home: Login(),
+          );
+        },
+      );
 }
