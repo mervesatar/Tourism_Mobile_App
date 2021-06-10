@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
+import 'package:geolocator/geolocator.dart';
+
 
 class ARPage extends StatefulWidget {
   final String tour_name;
@@ -36,11 +38,21 @@ class _ARPageState extends State<ARPage> {
       ),
     );
   }
-
+  double distanceInMeterslat;
+  double distanceInMeterslong;
+  void getCurrentLocation() async {
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var lat = position.latitude;
+    var long = position.longitude;
+     distanceInMeterslat = Geolocator.distanceBetween(lat, 1, 36.609567, 1);
+     distanceInMeterslong = Geolocator.distanceBetween(1, long, 1, 34.314801);
+  }
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
 
     _addCylindre(arCoreController);
+    _addCylindre1(arCoreController);
     //_addSphere(arCoreController);
     //_addCube(arCoreController);
   }
@@ -57,7 +69,23 @@ class _ARPageState extends State<ARPage> {
     );
     final node = ArCoreNode(
       shape: cylindre,
-      position: vector.Vector3(0.0, -0.5, -2.0),
+      position: vector.Vector3(distanceInMeterslong, -0.5, -2.0),
+    );
+    controller.addArCoreNode(node);
+  }
+  void _addCylindre1(ArCoreController controller)  {
+    final material = ArCoreMaterial(
+      color: Colors.green,
+      reflectance: 1.0,
+    );
+    final cylindre = ArCoreCylinder(
+      materials: [material],
+      radius: 0.5,
+      height: 0.3,
+    );
+    final node = ArCoreNode(
+      shape: cylindre,
+      position: vector.Vector3(0.0, -0.5, -distanceInMeterslat),
     );
     controller.addArCoreNode(node);
   }

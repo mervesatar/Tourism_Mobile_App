@@ -44,7 +44,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   font_awesome_flutter: ^9.0.0
   provider: ^5.0.0
-
+  geolocator: ^7.0.3
   barcode_scan_fix: ^1.0.2
   url_launcher: ^6.0.6
   arcore_flutter_plugin: ^0.0.11
