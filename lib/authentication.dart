@@ -8,7 +8,7 @@ class AuthenticationService {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String> signupProcess(String email, String password, String name,
-      String surname, String interest, String age) async {
+      String surname, String interest, String age,int point) async {
     if (email.trim().isEmpty || !email.trim().contains("@")) {
       return "Please enter a valid email address";
     }
@@ -38,6 +38,7 @@ class AuthenticationService {
           "surname": surname.trim(),
           "interest": interest.trim(),
           "age": age,
+          "point":point,
         },
       );
 
@@ -131,6 +132,54 @@ class AuthenticationService {
     } catch (err) {
       throw err.code;
     }
+  }
+  Future<String> updateUserInfo2(int point) async {
+    var temp = await FirebaseFirestore.instance
+        .collection('users')
+        .get();
+
+    int d=0;
+    temp.docs.forEach((doc) {
+      if (doc["name"] == Login.newUser.name&&doc["surname"]==Login.newUser.surname) {
+        print("firebase10");
+        d=doc["point"];
+        d+=point;
+      }
+    });
+
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(Login.newUser.id).update({
+
+        'point': d,
+      });
+
+      return 'Correct';
+    } on FirebaseAuthException catch (err) {
+      var message = "An error occured, please check your credentials!";
+
+      if (err.code != null) {
+        message = err.code;
+      }
+      throw message;
+    } catch (err) {
+      throw err.code;
+    }
+  }
+
+  Future<String> addToQR(
+      String category, String name, int point,String url) async {
+    DocumentReference ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(Login.newUser.id)
+        .collection('QR')
+        .doc();
+
+    ref.set({
+      "category": category,
+      "name": name,
+      "point": point,
+      "url": url,
+    });
   }
 
   Future<String> addtoRecentTours(

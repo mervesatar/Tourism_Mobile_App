@@ -44,11 +44,12 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   font_awesome_flutter: ^9.0.0
   provider: ^5.0.0
+  barcode_scan_fix: ^1.0.2
+  url_launcher: ^6.0.6
   
 
 
 dev_dependencies:
-  url_launcher: ^6.0.4
   google_maps_flutter: ^2.0.5
   flutter_test:
     sdk: flutter

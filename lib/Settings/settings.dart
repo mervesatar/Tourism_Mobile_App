@@ -4,6 +4,7 @@ import 'package:project/Settings/update_profile.dart';
 import 'package:project/language/test2.dart';
 import 'package:get/get.dart';
 
+import '../login.dart';
 import 'change_theme_button.dart';
 
 class SettingsOnePage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
                               builder: (context) => UpdateProfile()));
                     },
                     title: Text(
-                      '$userName',
+                      '${Login.newUser.email}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -86,16 +87,6 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
                     children: <Widget>[
-                      ListTile(
-                        leading: Icon(
-                          Icons.lock_outline,
-                        ),
-                        title: Text('change_password'.tr),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //open change password
-                        },
-                      ),
                       _buildDivider(),
                       ListTile(
                         leading: Icon(
@@ -108,54 +99,10 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
                               MaterialPageRoute(builder: (context) => Test2()));
                         },
                       ),
-                      _buildDivider(),
-                      ListTile(
-                        leading: Icon(
-                          Icons.location_on,
-                        ),
-                        title: Text('change_location'.tr),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //open change location
-                        },
-                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                Text(
-                  'notifications'.tr,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                SwitchListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text("Received notification"),
-                  onChanged: (val) {},
-                ),
-                SwitchListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  value: false,
-                  title: Text("Received newsletter"),
-                  onChanged: null,
-                ),
-                SwitchListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text("Received Offer Notification"),
-                  onChanged: (val) {},
-                ),
-                SwitchListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  value: true,
-                  title: Text("Received App Updates"),
-                  onChanged: null,
-                ),
-                const SizedBox(height: 60.0),
               ],
             ),
           ),
@@ -176,7 +123,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
             left: 00,
             child: IconButton(
               icon: Icon(
-                Icons.logout_outlined,
+                Icons.logout,
                 color: Colors.white,
               ),
               onPressed: () {

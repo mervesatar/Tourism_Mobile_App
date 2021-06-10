@@ -27,7 +27,16 @@ class _RatingState extends State<Rating> {
     return Scaffold(
       backgroundColor: Colors.teal[50],
       appBar: AppBar(
-        backgroundColor: Colors.black,
+
+        backgroundColor: Colors.lightBlue,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecentTrips()),
+              );
+            }),
         title: Text('${tour_name} Rating'),
         automaticallyImplyLeading: false,
       ),
@@ -36,7 +45,7 @@ class _RatingState extends State<Rating> {
           child: MaterialButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            color: Colors.cyan,
+            color: Colors.lightBlue,
             padding: EdgeInsets.only(left: 30, right: 30),
             child: Text(
               'Rate ${tour_name}',

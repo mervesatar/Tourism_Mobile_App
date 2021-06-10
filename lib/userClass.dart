@@ -5,6 +5,7 @@ class userClass {
   String surname;
   String interest;
   String age;
+  int point;
 
   userClass({
     this.id,
@@ -13,5 +14,6 @@ class userClass {
     this.interest,
     this.email,
     this.age,
+    this.point,
   });
 }

@@ -176,6 +176,7 @@ class _signup extends State<signup> {
                           surnameControl.text,
                           interestControl.text,
                           ageControl.text,
+                      0
                         )
                         .then((value) {
                       //Scaffold.of(context).showSnackBar(SnackBar(
