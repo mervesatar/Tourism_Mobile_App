@@ -4,7 +4,7 @@ import 'package:project/TripPage.dart';
 import 'package:project/recentTrips.dart';
 import 'package:project/search_trips.dart';
 import 'package:get/get.dart';
-
+import 'QRPage.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -229,7 +229,7 @@ class MainPage extends StatelessWidget {
                         fontSize: 24,
                       ),
                     ),
-                    /*
+
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -237,7 +237,6 @@ class MainPage extends StatelessWidget {
                               builder: (context) => QR()));
                     },
 
-                     */
                   ),
                 ),
 
