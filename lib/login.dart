@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'MainPage.dart';
 import 'homepage.dart';
 import 'signup.dart';
@@ -7,6 +8,8 @@ import 'authentication.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
+
+Position current_ = new Position();
 
 class Login extends StatefulWidget {
   static String email;
@@ -26,6 +29,34 @@ class _LoginState extends State<Login> {
   TextEditingController mailControl = new TextEditingController();
   TextEditingController passwordControl = new TextEditingController();
   bool isloading = false;
+
+  void getLocation() async {
+    print('getting current location...');
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+    current_ = position;
+    print(position.latitude);
+    print(position.longitude);
+  }
 
   @override
   void initState() {
@@ -153,6 +184,7 @@ class _LoginState extends State<Login> {
                               });
 
                               print(value);
+                              getLocation();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

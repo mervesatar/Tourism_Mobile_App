@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:project/Settings/settings.dart';
 import 'package:project/TripPage.dart';
 import 'package:project/recentTrips.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'QRPage.dart';
 
 class MainPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

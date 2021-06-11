@@ -6,7 +6,10 @@ import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_place/google_place.dart' as gp;
 import 'package:http/http.dart' as http;
+import 'package:project/MainPage.dart';
 import 'dart:convert';
+import 'Directions/directions_model.dart';
+import 'Directions/directions_repository.dart';
 import 'authentication.dart';
 import 'login.dart';
 
@@ -265,10 +268,12 @@ class MapSampleState extends State<MapSample> {
 
   Completer<GoogleMapController> _controller = Completer();
 
+  Marker Current;
+  Marker Destination;
+  Directions _info;
   double long2;
   double lat2;
   CameraPosition _kGooglePlex;
-  CameraPosition _kLake;
   @override
   void initState() {
     long2 = long;
@@ -277,43 +282,70 @@ class MapSampleState extends State<MapSample> {
       target: LatLng(lat2, long2),
       zoom: 14.4746,
     );
-    _kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(lat2, long2),
-        tilt: 59.440717697143555,
-        zoom: 19.151926040649414);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: GoogleMap(
-        mapType: MapType.hybrid,
+        zoomControlsEnabled: true,
+        mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        markers: {
+          if (Current != null) Current,
+          if (Destination != null) Destination,
+        },
+        polylines: {
+          if (_info != null)
+            Polyline(
+              polylineId: const PolylineId('overview_polyline'),
+              color: Colors.red,
+              width: 5,
+              points: _info.polylinePoints
+                  .map((e) => LatLng(e.latitude, e.longitude))
+                  .toList(),
+            ),
+        },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('Zoom'),
-        icon: Icon(Icons.zoom_in),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _goToCurrent,
+        child: const Icon(Icons.center_focus_strong),
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
+  Future<void> _goToCurrent() async {
+    print(current_.latitude);
+    _createMarkers();
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(current_.latitude, current_.longitude),
+        zoom: 19.151926040649414)));
   }
 
-  Set<Marker> _createMarker(String marker, double lat, double long) {
-    return {
-      Marker(
-        markerId: MarkerId(marker),
+  void _createMarkers() async{
+    print('sss');
+    setState(() {
+      Current = Marker(
+        markerId: MarkerId('Current Location'),
+        infoWindow: InfoWindow(title: 'Current Location'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        position: LatLng(current_.latitude, current_.longitude),
+      );
+      Destination = Marker(
+        markerId: MarkerId('Destination'),
+        infoWindow: InfoWindow(title: 'Destination'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         position: LatLng(lat, long),
-      ),
-    };
+      );
+    });
+
+    final directions = await DirectionsRepository()
+        .getDirections(origin: Current.position, destination: Destination.position);
+    setState(() => _info = directions);
   }
 }
 
