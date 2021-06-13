@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'MainPage.dart';
@@ -20,15 +22,6 @@ class Login extends StatefulWidget {
 
   @override
   _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  String _connectionStatus = 'Unknown';
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
-  TextEditingController mailControl = new TextEditingController();
-  TextEditingController passwordControl = new TextEditingController();
-  bool isloading = false;
 
   void getLocation() async {
     print('getting current location...');
@@ -57,6 +50,23 @@ class _LoginState extends State<Login> {
     print(position.latitude);
     print(position.longitude);
   }
+  double distance(double a1, double a2, double b1, double b2){
+    double d1 = (a1-b1)*(a1-b1);
+    double d2 = (a2-b2)*(a2-b2);
+    double dis = sqrt(d1+d2);
+    return dis;
+  }
+}
+
+class _LoginState extends State<Login> {
+  String _connectionStatus = 'Unknown';
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  TextEditingController mailControl = new TextEditingController();
+  TextEditingController passwordControl = new TextEditingController();
+  bool isloading = false;
+
+
 
   @override
   void initState() {
@@ -184,7 +194,8 @@ class _LoginState extends State<Login> {
                               });
 
                               print(value);
-                              getLocation();
+                              Login lg = new Login();
+                              lg.getLocation();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

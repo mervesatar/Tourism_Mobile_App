@@ -7,7 +7,9 @@ import 'package:project/search_trips.dart';
 import 'package:get/get.dart';
 
 import 'homepage.dart';
-
+import 'dart:math';
+import 'package:geocoding/geocoding.dart';
+import 'login.dart';
 class SearchDetail extends StatefulWidget {
   final String category;
   static List<String> tours = [];
@@ -24,11 +26,17 @@ class SearchDetail extends StatefulWidget {
 
 class _SearchDetailState extends State<SearchDetail> {
   final String category;
-  _SearchDetailState(this.category);
 
+  _SearchDetailState(this.category);
+  List<Location> locations;
+  List<String> inDistance=[];
   @override
   void initState() {
     getList();
+    if(category=="Recommended"){
+     // getList2();
+    }
+
     super.initState();
   }
 
@@ -112,7 +120,18 @@ class _SearchDetailState extends State<SearchDetail> {
                     ))
             : Center(child: CircularProgressIndicator()));
   }
+  double distance(double a1, double a2, double b1, double b2){
+    double d1 = (a1-b1)*(a1-b1);
+    double d2 = (a2-b2)*(a2-b2);
+    double dis = sqrt(d1+d2);
+    return dis;
+  }
 
+  Future<List<Location>> getList2(String query) async {
+    locations = await locationFromAddress(query);
+    print(locations);
+    return locations;
+  }
   Future<List> getList() async {
     var temp = await FirebaseFirestore.instance.collection('tours').get();
 
@@ -136,7 +155,8 @@ class _SearchDetailState extends State<SearchDetail> {
         }
       });
     } else if (category == "Recommended") {
-      temp.docs.forEach((doc) {
+      temp.docs.forEach((doc) async {
+
         if (doc["tour_category"] == Login.newUser.interest) {
           double ratings = doc["tour_rate"].toDouble();
           double rate_number = doc["rate_number"].toDouble();
@@ -152,17 +172,33 @@ class _SearchDetailState extends State<SearchDetail> {
           }
         }
       });
-
-      temp2.docs.forEach((doc) {
+      List<String> list =[];
+      double longitude = current_.longitude;
+      double latitude = current_.latitude;
+      temp2.docs.forEach((doc) async{
         if (doc["category"] == Login.newUser.interest) {
-          setState(() {
-            SearchDetail.tours.add(doc["name"]);
-            SearchDetail.length++;
-            tours.add(doc["name"]);
-          });
+          double placeLongitude = doc["longitude"];
+          print(placeLongitude);
+          double placeLatitude = doc["latitude"];
+          print(placeLatitude);
+          if(distance(longitude, latitude, placeLongitude, placeLatitude)<3){
+            setState(() async{
+              SearchDetail.tours.add(doc["name"]);
+              SearchDetail.length++;
+              tours.add(doc["name"]);
+            });
+          }
         }
       });
-    } else {
+
+
+
+
+
+      print("Done");
+    }
+
+    else {
       temp.docs.forEach((doc) {
         if (doc["tour_category"] == category) {
           double ratings = doc["tour_rate"].toDouble();
@@ -214,3 +250,4 @@ Widget _ratingBar(double rate) {
     updateOnDrag: true,
   );
 }
+

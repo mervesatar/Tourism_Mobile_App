@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'block.dart';
+import 'package:get/get.dart';
 
 class RankingList extends StatefulWidget {
   @override
@@ -25,7 +25,18 @@ class _RankingListState extends State<RankingList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("The Winners of The Week"),),
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(
+          'Recent Locations'.tr,
+          style: new TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Satisfy',
+          ),
+        ),
+        //automaticallyImplyLeading: false,
+      ),
       body: StreamBuilder<List<DocumentSnapshot>>(
         stream: movieListBloc.movieStream,
         builder: (context, snapshot) {

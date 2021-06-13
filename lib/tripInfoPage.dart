@@ -319,6 +319,7 @@ class MapSampleState extends State<MapSample> {
 
   Future<void> _goToCurrent() async {
     print(current_.latitude);
+    print(current_.longitude);
     _createMarkers();
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -328,6 +329,8 @@ class MapSampleState extends State<MapSample> {
 
   void _createMarkers() async{
     print('sss');
+    final Login lg= new Login();
+    lg.getLocation();
     setState(() {
       Current = Marker(
         markerId: MarkerId('Current Location'),
@@ -346,6 +349,7 @@ class MapSampleState extends State<MapSample> {
     final directions = await DirectionsRepository()
         .getDirections(origin: Current.position, destination: Destination.position);
     setState(() => _info = directions);
+
   }
 }
 
