@@ -46,10 +46,11 @@ dependencies:
   provider: ^5.0.0
   barcode_scan_fix: ^1.0.2
   url_launcher: ^6.0.6
-  arcore_flutter_plugin: ^0.0.11
   geolocator: ^7.1.0
   dio: ^4.0.0
   flutter_polyline_points: ^0.2.6
+  firebase_ml_vision: ^0.9.3+3
+  rxdart: 0.22.6
 
 
 dev_dependencies:

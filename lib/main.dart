@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
+import 'MainPage.dart';
 import 'Settings/theme_provider.dart';
+import 'homepage.dart';
 import 'language/localization_service.dart';
 
+import 'login.dart';
 import 'login.dart';
 
 Future<void> main() async {
@@ -41,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
           return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
             themeMode: themeProvider.themeMode,
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,

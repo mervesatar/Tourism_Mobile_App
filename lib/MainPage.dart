@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:project/RankingList/ranking_list.dart';
 import 'package:project/Settings/settings.dart';
 import 'package:project/TripPage.dart';
 import 'package:project/recentTrips.dart';
@@ -247,6 +248,17 @@ class MainPage extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child:Icon(Icons.star) ,
+        backgroundColor: Colors.lightBlue,
+        onPressed: (){
+           Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RankingList()));
+          
+        },
+        ),
     );
   }
 }

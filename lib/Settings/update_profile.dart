@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/MainPage.dart';
+
 import '../authentication.dart';
 import '../login.dart';
 
@@ -28,6 +29,10 @@ class _UpdateProfile extends State<UpdateProfile> {
     ageControl.text = Login.newUser.age;
     surnameControl.text = Login.newUser.surname;
   }
+
+  String interest = 'history';
+
+  var items = ['history', 'food', 'fun', 'art'];
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +109,40 @@ class _UpdateProfile extends State<UpdateProfile> {
                 height: (MediaQuery.of(context).size.height) / 30,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  controller: interestControl,
-                  decoration: InputDecoration(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                child: new Container(
+              
+                  child: new Column(
+                    children: [
+                      new Row(
+                        children: <Widget>[
+                          new Expanded(
+                              child:
+                                  new TextField(controller: interestControl,
+                                 decoration: InputDecoration(
                       fillColor: Colors.white.withOpacity(0.7),
                       filled: true,
-                      border: OutlineInputBorder(),
-                      labelText: 'Interest',
-                      hintText: Login.newUser.interest),
+                      border: OutlineInputBorder(),  
+                      labelText: 'Interest', 
+                      ),
+                                  )),
+                          new PopupMenuButton<String>(
+                            icon: const Icon(Icons.arrow_drop_down),
+                            onSelected: (String value) {
+                              interestControl.text = value;
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return items
+                                  .map<PopupMenuItem<String>>((String value) {
+                                return new PopupMenuItem(
+                                    child: new Text(value), value: value);
+                              }).toList();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -165,6 +195,7 @@ class _UpdateProfile extends State<UpdateProfile> {
                       Login.newUser.surname = surnameControl.text;
                       Login.newUser.interest = interestControl.text;
                       Login.newUser.age = ageControl.text;
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MainPage()));
                     }).catchError((Error) {
