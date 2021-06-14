@@ -51,6 +51,7 @@ dependencies:
   flutter_polyline_points: ^0.2.6
   firebase_ml_vision: ^0.9.3+3
   rxdart: 0.22.6
+  arcore_flutter_plugin: ^0.0.11
 
 
 dev_dependencies:
