@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,9 @@ class ARPage extends StatefulWidget {
 
 class _ARPageState extends State<ARPage> {
   final tour_name;
+  List <double> latitude=[];
+  List <double> longitude=[];
+  List<String> names=[];
   ArCoreController arCoreController;
   _ARPageState(this.tour_name);
   @override
@@ -42,43 +46,13 @@ class _ARPageState extends State<ARPage> {
 
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
-    _addCylindre(arCoreController);
-    _addCylindre1(arCoreController);
-    //_addSphere(arCoreController);
-    _addCube(arCoreController);
-  }
 
-  void _addCylindre(ArCoreController controller) async {
-    var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    var lat = position.latitude;
-    var long = position.longitude;
-    double distanceInMeterslat =
-        Geolocator.distanceBetween(lat, 1, 36.609567, 1);
-    double distanceInMeterslong =
-        Geolocator.distanceBetween(1, long, 1, 34.314801);
-    if (lat > 36.609567) {
-      double temp = distanceInMeterslat;
-      distanceInMeterslat = -temp;
-    }
-    if (long > 34.314801) {
-      double temp = distanceInMeterslong;
-      distanceInMeterslong = -temp;
-    }
-    final material = ArCoreMaterial(
-      color: Colors.red,
-      reflectance: 1.0,
-    );
-    final cylindre = ArCoreCylinder(
-      materials: [material],
-      radius: 0.5,
-      height: 0.3,
-    );
-    final node = await ArCoreNode(
-      shape: cylindre,
-      position: vector.Vector3(distanceInMeterslong, 1.5, -distanceInMeterslat),
-    );
-    controller.addArCoreNode(node);
+    //_addCylindre1(arCoreController);
+    _addCube(arCoreController);
+    _addCube2(arCoreController, 0);
+    _addCube2(arCoreController, 1);
+    _addCube2(arCoreController, 2);
+    _addCube2(arCoreController, 3);
   }
 
   void _addCylindre1(ArCoreController controller) {
@@ -98,21 +72,7 @@ class _ARPageState extends State<ARPage> {
     controller.addArCoreNode(node);
   }
 
-/*
-  void _addSphere(ArCoreController controller) {
-    final material = ArCoreMaterial(
-        color: Color.fromARGB(120, 66, 134, 244));
-    final sphere = ArCoreSphere(
-      materials: [material],
-      radius: 0.1,
-    );
-    final node = ArCoreNode(
-      shape: sphere,
-      position: vector.Vector3(0, 0, -1.5),
-    );
-    controller.addArCoreNode(node);
-  }
-*/
+
   void _addCube(ArCoreController controller) async {
     final ByteData textureBytes = await rootBundle.load('images/Anıtkabir.jpg');
     var position = await Geolocator.getCurrentPosition(
@@ -120,14 +80,14 @@ class _ARPageState extends State<ARPage> {
     var lat = position.latitude;
     var long = position.longitude;
     double distanceInMeterslat =
-        Geolocator.distanceBetween(lat, 1, 38.6555274, 1);
+        Geolocator.distanceBetween(lat, 1, 40.9845773, 1);
     double distanceInMeterslong =
-        Geolocator.distanceBetween(1, long, 1, 35.4911245);
-    if (lat > 38.6555274) {
+        Geolocator.distanceBetween(1, long, 1, 39.7287334);
+    if (lat > 40.9845773) {
       double temp = distanceInMeterslat;
       distanceInMeterslat = -temp;
     }
-    if (long > 35.4911245) {
+    if (long > 39.7287334) {
       double temp = distanceInMeterslong;
       distanceInMeterslong = -temp;
     }
@@ -142,7 +102,41 @@ class _ARPageState extends State<ARPage> {
     );
     final node = await ArCoreNode(
       shape: cube,
-      position: vector.Vector3(-0.5, 0.5, -3.5),
+      position: vector.Vector3(distanceInMeterslong, 0.5, -distanceInMeterslat),
+    );
+    controller.addArCoreNode(node);
+  }
+
+  void _addCube2(ArCoreController controller,int i) async {
+    final ByteData textureBytes = await rootBundle.load('images/$names[i].jpg');
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var lat = position.latitude;
+    var long = position.longitude;
+    double distanceInMeterslat =
+    Geolocator.distanceBetween(lat, 1, latitude[i], 1);
+    double distanceInMeterslong =
+    Geolocator.distanceBetween(1, long, 1, longitude[i]);
+    if (lat > latitude[i]) {
+      double temp = distanceInMeterslat;
+      distanceInMeterslat = -temp;
+    }
+    if (long > longitude[i]) {
+      double temp = distanceInMeterslong;
+      distanceInMeterslong = -temp;
+    }
+    final material = ArCoreMaterial(
+      color: Color.fromARGB(120, 66, 134, 244),
+      metallic: 3.0,
+      textureBytes: textureBytes.buffer.asUint8List(),
+    );
+    final cube = ArCoreCube(
+      materials: [material],
+      size: vector.Vector3(0.5, 0.5, 0.5),
+    );
+    final node = await ArCoreNode(
+      shape: cube,
+      position: vector.Vector3(distanceInMeterslong, 4, -distanceInMeterslat),
     );
     controller.addArCoreNode(node);
   }
@@ -151,5 +145,17 @@ class _ARPageState extends State<ARPage> {
   void dispose() {
     arCoreController.dispose();
     super.dispose();
+  }
+
+  void getList() async{
+
+    var temp =
+    await FirebaseFirestore.instance.collection('tours').doc(tour_name).collection("locations").get();
+      temp.docs.forEach((doc) {
+        latitude.add(doc["latitude"]);
+        longitude.add(doc["longitude"]);
+        names.add(doc["location_name"]);
+      });
+
   }
 }
