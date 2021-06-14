@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ARPage.dart';
 import 'tripInfoPage.dart';
 
 class Homepage extends StatefulWidget {
@@ -43,9 +44,9 @@ class _HomepageState extends State<Homepage> {
             tour_rate: Homepage.tour_rate,
             rate_number: Homepage.rate_number,
           ),
-         /* ARPage(
+          ARPage(
             tour_name: Homepage.tour_name,
-          ),*/
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

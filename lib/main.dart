@@ -2,13 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:project/ARPage.dart';
 import 'package:provider/provider.dart';
-import 'MainPage.dart';
 import 'Settings/theme_provider.dart';
-import 'homepage.dart';
 import 'language/localization_service.dart';
-
-import 'login.dart';
 import 'login.dart';
 
 Future<void> main() async {
@@ -52,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             translations: LocalizationService(),
             locale: Locale('en', 'US'),
             fallbackLocale: Locale('en', 'US'),
-            home: Login(),
+            home: ARPage(),
           );
         },
       );
