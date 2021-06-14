@@ -202,13 +202,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_compass:
-    dependency: "direct main"
-    description:
-      name: flutter_compass
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.5"
   flutter_dotenv:
     dependency: "direct main"
     description:

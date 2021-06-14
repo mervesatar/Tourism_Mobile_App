@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             translations: LocalizationService(),
             locale: Locale('en', 'US'),
             fallbackLocale: Locale('en', 'US'),
-            home: ARPage(),
+            home: Login(),
           );
         },
       );

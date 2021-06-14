@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 import 'package:geolocator/geolocator.dart';
 
-
 class ARPage extends StatefulWidget {
   final String tour_name;
   ARPage({@required this.tour_name});
@@ -46,23 +45,25 @@ class _ARPageState extends State<ARPage> {
     _addCylindre(arCoreController);
     _addCylindre1(arCoreController);
     //_addSphere(arCoreController);
-    //_addCube(arCoreController);
+    _addCube(arCoreController);
   }
 
-  void _addCylindre(ArCoreController controller) async{
+  void _addCylindre(ArCoreController controller) async {
     var position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     var lat = position.latitude;
     var long = position.longitude;
-    double distanceInMeterslat = Geolocator.distanceBetween(lat, 1, 36.609567, 1);
-    double distanceInMeterslong = Geolocator.distanceBetween(1, long, 1, 34.314801);
-    if(lat>36.609567){
-      double temp =distanceInMeterslat;
-      distanceInMeterslat=-temp;
+    double distanceInMeterslat =
+        Geolocator.distanceBetween(lat, 1, 36.609567, 1);
+    double distanceInMeterslong =
+        Geolocator.distanceBetween(1, long, 1, 34.314801);
+    if (lat > 36.609567) {
+      double temp = distanceInMeterslat;
+      distanceInMeterslat = -temp;
     }
-    if(long>34.314801){
-      double temp =distanceInMeterslong;
-      distanceInMeterslong=-temp;
+    if (long > 34.314801) {
+      double temp = distanceInMeterslong;
+      distanceInMeterslong = -temp;
     }
     final material = ArCoreMaterial(
       color: Colors.red,
@@ -79,7 +80,8 @@ class _ARPageState extends State<ARPage> {
     );
     controller.addArCoreNode(node);
   }
-  void _addCylindre1(ArCoreController controller)  {
+
+  void _addCylindre1(ArCoreController controller) {
     final material = ArCoreMaterial(
       color: Colors.green,
       reflectance: 1.0,
@@ -95,6 +97,7 @@ class _ARPageState extends State<ARPage> {
     );
     controller.addArCoreNode(node);
   }
+
 /*
   void _addSphere(ArCoreController controller) {
     final material = ArCoreMaterial(
@@ -109,22 +112,40 @@ class _ARPageState extends State<ARPage> {
     );
     controller.addArCoreNode(node);
   }
-
-  void _addCube(ArCoreController controller) {
+*/
+  void _addCube(ArCoreController controller) async {
+    final ByteData textureBytes = await rootBundle.load('images/Anıtkabir.jpg');
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var lat = position.latitude;
+    var long = position.longitude;
+    double distanceInMeterslat =
+        Geolocator.distanceBetween(lat, 1, 38.6555274, 1);
+    double distanceInMeterslong =
+        Geolocator.distanceBetween(1, long, 1, 35.4911245);
+    if (lat > 38.6555274) {
+      double temp = distanceInMeterslat;
+      distanceInMeterslat = -temp;
+    }
+    if (long > 35.4911245) {
+      double temp = distanceInMeterslong;
+      distanceInMeterslong = -temp;
+    }
     final material = ArCoreMaterial(
       color: Color.fromARGB(120, 66, 134, 244),
       metallic: 3.0,
+      textureBytes: textureBytes.buffer.asUint8List(),
     );
     final cube = ArCoreCube(
       materials: [material],
       size: vector.Vector3(0.5, 0.5, 0.5),
     );
-    final node = ArCoreNode(
+    final node = await ArCoreNode(
       shape: cube,
       position: vector.Vector3(-0.5, 0.5, -3.5),
     );
     controller.addArCoreNode(node);
-  }*/
+  }
 
   @override
   void dispose() {
