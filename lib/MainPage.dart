@@ -1,4 +1,4 @@
-import 'dart:math';
+  import 'dart:math';
 
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -396,9 +396,9 @@ class _MainPageState extends State<MainPage> {
     print("name: $name");
     print("category: $category");
     print ("point: $point");
-    //39.7287417,40.9845886
-    //locations[0].longitude,locations[0].latitude
-    if(distance(longitude,latitude,39.7287417,40.9845886)<0.5){
+
+
+    if(distance(longitude,latitude,locations[0].longitude,locations[0].latitude)<0.5){
       MainPage()
           .autService
           .addToQR(category, name, point,barcode)
